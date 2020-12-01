@@ -11,10 +11,10 @@ export default (props) => {
     <div className="">
       <h3>ROSBOT Model scale:</h3>
       <Slider
-        defaultValue={0.1}
-        min={0.01}
-        max={0.25}
-        step={0.01}
+        defaultValue={80}
+        min={10}
+        max={150}
+        step={5}
         onChange={props.changeModelSizeHandler}
       />
     </div>

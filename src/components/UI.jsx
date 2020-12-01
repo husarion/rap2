@@ -26,14 +26,11 @@ const husarionMaterialTheme = createMuiTheme({
 
 export default (props) => {
 
-  const [targets, setTargets] = useState([]);
-
-
   return (
     <div>
       <Logo />
       <Instructions />
-      <DestTable />
+      <DestTable targets={props.targets} />
       <ThemeProvider theme={husarionMaterialTheme}>
         <ModelSizeSlider 
           changeModelSizeHandler={props.changeModelSizeHandler}

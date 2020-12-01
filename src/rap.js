@@ -28,48 +28,6 @@ document.getElementsByTagName('img')[0].onclick = function () {
   socket.emit('raw_map_request');
 }
 
-socket.on('raw_map_data', (mapdata) => {
-  console.log('raw_map_data EVENT', data);
-  handleRawMapData(mapdata); // I assume.
-});
-
-socket.on('map_update', (data) => {
-  // It goes every second, and is legacy. Not very useful.
-  // console.log('map_update EVENT', data);
-});
-
-socket.on('map_file_list', (data) => {
-  console.log('map_file_list EVENT', data);
-});
-
-socket.on('add_target', (data) => {
-  console.log('add_target EVENT', data);
-});
-
-socket.on('remove_target_by_id', (data) => {
-  console.log('remove_target_by_id EVENT', data);
-});
-
-socket.on('new_route_point', (data) => {
-  console.log('new_route_point EVENT', data);
-});
-
-socket.on('del_route_point', (data) => {
-  console.log('del_route_point EVENT', data);
-});
-
-socket.on('route_status', (data) => {
-  console.log('route_status EVENT', data);
-});
-
-socket.on('current_plan', (data) => {
-  console.log('current_pln EVENT', data);
-});
-
-socket.on('set_scale_range', (data) => {
-  console.log('set_scale_range EVENT', data);
-});
-
 function handleRawMapData(mapdata) {
   // mapdata.data is the array
   // mapdata.info.width

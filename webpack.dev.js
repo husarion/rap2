@@ -10,9 +10,13 @@ module.exports = merge(common, {
   devtool: 'inline-source-map',
 
   devServer: {
-
+    headers: {
+      "Access-Control-Allow-Origin": "*",
+    },
     contentBase: './dist',
-
+    watchOptions: {
+      ignored: /node_modules/
+    }
   },
 
 });
