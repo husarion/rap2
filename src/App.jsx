@@ -13,7 +13,6 @@ export default () => {
     // transform xOnMap, yOnMap to actual data for robot.
     // that is, target relative to origin of robot map.
 
-
     setTargets([...targets, {
       targetPos: [xOnMap, 0, yOnMap],
       x: xOnMap,

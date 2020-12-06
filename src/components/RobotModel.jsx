@@ -9,8 +9,6 @@ import rosbotModel from '../assets/ROSBOT2.gltf';
 export default (props) => {
   const { nodes, materials } = useLoader(GLTFLoader, rosbotModel)
   const group = useRef()
-  
-  // const { scene } = useLoader(GLTFLoader, rosbotModel)
 
   return (
     <group ref={group} {...props} dispose={null} scale={[props.scale, props.scale, props.scale]}>
@@ -21,9 +19,4 @@ export default (props) => {
       <mesh material={materials['0137_Black']} geometry={nodes.mesh_0_4.geometry} />
     </group>
   )
-
-  // return <primitive 
-  //          object={scene} 
-           
-  //          dispose={null} />
 }

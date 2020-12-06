@@ -91,11 +91,6 @@ export class SocketManager extends React.Component {
   }
 
   handleRawMapData(mapdata) {
-    // mapdata.data is the array
-    // mapdata.info.width
-    // mapdata.info.height
-
-    console.log("handleRawMapData is called")
     const canvas = document.createElement("canvas");
     const ctx = canvas.getContext("2d");
 
@@ -103,10 +98,8 @@ export class SocketManager extends React.Component {
     canvas.height = mapdata.info.height;
 
     var len = mapdata.data.length;
-    // var valuesInArr = new Set();
 
     for (var i = 0; i < len; i++) {
-      // valuesInArr.add(mapdata.data[i]);
       if (mapdata.data[i] == -1) {
         ctx.fillStyle = "#dfdfdf";
       }
@@ -126,9 +119,6 @@ export class SocketManager extends React.Component {
       );
     }
 
-    // console.log(valuesInArr);
-
-    // w zasadzie moglbym to 1 do 1
     this.setState({
       mapCanvas: canvas,
       mapInfo: {
@@ -141,6 +131,7 @@ export class SocketManager extends React.Component {
     });
   }
 
+  // fake canvas for when we have no map.
   createFakeCanvas() {
     const canvas = document.createElement("canvas");
     const ctx = canvas.getContext("2d");
@@ -151,42 +142,6 @@ export class SocketManager extends React.Component {
     ctx.fillStyle = "darkslateblue";
     ctx.fillRect(0, 0, 1000, 1000);
     return canvas;
-  }
-
-  createFakeMapData() {
-    // map data is just an array of size w * h, having (0, 100 or -1 values)
-
-    const w = 600;
-    const h = 1700;
-
-    // somewhere on the heap, we create this monstrosity.
-    const arr = [];
-
-    for (let i = 0; i < w * h; i++) {
-      arr[i] = -1;
-
-      if (i % 123 == 0) {
-        arr[i] = 100;
-      }
-
-      if (i % 444 == 0) {
-        arr[i] = 0;
-      }
-    }
-
-    return {
-      info: {
-        width: w,
-        height: h,
-        origin:{
-          position: {
-            x: -5,
-            y: -18.44
-          }
-        }
-      },
-      data: arr,
-    };
   }
 
   render() {

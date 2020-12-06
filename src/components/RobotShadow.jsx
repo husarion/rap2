@@ -8,8 +8,6 @@ export default (props) => {
   const { nodes } = useLoader(GLTFLoader, rosbotModel)
   const group = useRef()
 
-  // const { scene } = useLoader(GLTFLoader, rosbotModel)
-
   return (
     <group ref={group} {...props} dispose={null} scale={[props.scale, props.scale, props.scale]}>
       <mesh geometry={nodes.mesh_0.geometry}>
