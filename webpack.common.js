@@ -1,5 +1,6 @@
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 const MiniCssExtractPlugin = require('mini-css-extract-plugin')
+const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
 const path = require('path')
 
 module.exports = {
@@ -20,7 +21,9 @@ module.exports = {
       filename: 'index.html'
     }),
 
-    new MiniCssExtractPlugin()
+    new MiniCssExtractPlugin(),
+    
+    new BundleAnalyzerPlugin()
   ],
 
   resolve: {
@@ -33,6 +36,10 @@ module.exports = {
         test: /\.(js|jsx)$/,
         exclude: /node_modules/,
         use: ['babel-loader']
+      },
+      {
+        test: /\.worker\.js$/,
+        use: { loader: "worker-loader" },
       },
       {
         test: /\.css$/i,

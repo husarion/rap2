@@ -6,6 +6,7 @@ import { SocketManager } from './components/SocketManager';
 export default () => {
   const [modelSize, setModelSize] = useState(80);
   const [targets, setTargets] = useState([]);
+  const [activeTarget, setActiveTarget] = useState(null);
 
   const addTarget = (xOnMap, yOnMap) => {
     console.log("Adding target: ", xOnMap, yOnMap);
@@ -21,6 +22,15 @@ export default () => {
     }])
   }
 
+  const targetHoverOn = (e) => {
+    
+  }
+
+
+  const targetHoverOff = (e) => {
+    
+  }
+
   return (
     <div className="">
       <SocketManager>
@@ -34,6 +44,8 @@ export default () => {
             modelSize={modelSize}
             targets={targets}
             addTargetHandler={addTarget}
+            targetHoverOn={targetHoverOn}
+            targetHoverOff={targetHoverOff}
           />
       </SocketManager>
     </div>

@@ -1,5 +1,6 @@
 import React, { createContext, useContext, useMemo } from "react";
 import io from "socket.io-client";
+import Worker from "../helpers/mapdata.worker.js";
 
 export const SocketContext = createContext({
   mapCanvas: {},
@@ -24,26 +25,39 @@ export class SocketManager extends React.Component {
 
   socket = null;
 
+  worker = null;
+
   constructor(props) {
     super(props);
 
+    this.worker = new Worker();
+
+    this.worker.onmessage = (e) => {
+      console.log("Worker msg ", e );
+      const ctx = this.state.mapCanvas.getContext('2d');
+      ctx.putImageData(e.data.imagedata, 0, 0);
+    }
+
     this.socket = io("http://localhost:3003/"); // for testing with no robot
-    //this.socket = io();
+    // this.socket = io();
+
     this.socket.on("raw_map_data", (mapdata) => {
       console.log("raw_map_data EVENT", mapdata);
-      this.handleRawMapData(mapdata);
+      // this.handleRawMapData(mapdata);
+      this.handleRawMapDataWebWorker(mapdata);
+
     });
 
     this.socket.on("robot_pose", (data) => {
       console.log("Robot pose - this is often", data);
       this.setState((prevState) => {
         const res = prevState.mapInfo.resolution;
-        const ourOriginX = -(prevState.mapCanvas.width/2);
+        const ourOriginX = prevState.mapCanvas.width/2;
         const ourOriginY = prevState.mapCanvas.height/2;
-        const originDiffX = ourOriginX - prevState.mapInfo.originPos.x/res;
+        const originDiffX = ourOriginX + prevState.mapInfo.originPos.x/res;
         const originDiffY = ourOriginY + prevState.mapInfo.originPos.y/res;
 
-        let x = data.x_pos/res + originDiffX;
+        let x = data.x_pos/res - originDiffX;
         let y = data.y_pos/res + originDiffY;
 
         return {
@@ -87,6 +101,28 @@ export class SocketManager extends React.Component {
 
     this.socket.on('set_scale_range', (data) => {
       console.log('set_scale_range EVENT', data);
+    });
+  }
+
+  handleRawMapDataWebWorker(mapdata) {
+    const canvas = document.createElement("canvas");
+    const ctx = canvas.getContext("2d");
+
+    canvas.width = mapdata.info.width;
+    canvas.height = mapdata.info.height;
+
+    console.log("Posting to worker.")
+    this.worker.postMessage({ mapdata: mapdata})
+
+    this.setState({
+      mapCanvas: canvas,
+      mapInfo: {
+        resolution: mapdata.info.resolution,
+        originPos: {
+          x: mapdata.info.origin.position.x,
+          y: mapdata.info.origin.position.y
+        }
+      }
     });
   }
 

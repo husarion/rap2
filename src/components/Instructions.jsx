@@ -3,7 +3,10 @@ import React from 'react';
 export default () => {
   return (
     <div className="instructions">
-      Use your mouse to browse canvas. Scroll to zoom, Left-click to rotate, Right-click to pan.
+      Use your mouse to browse canvas. Scroll to zoom, Hold left-click to rotate and right-click to pan around. 
+      <br/>
+      <br/>
+      Add target by holding shift and clicking on the map area. You can remove view and remove targets using below table.
     </div>
   );
 }

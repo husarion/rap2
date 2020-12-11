@@ -1,4 +1,6 @@
 import React from 'react';
+import DeleteIcon from '@material-ui/icons/Delete';
+import DoubleArrowIcon from '@material-ui/icons/DoubleArrow';
 
 export default (props) => {
 
@@ -6,9 +8,10 @@ export default (props) => {
     return (
       <tr>
       <td>{i}</td>
-      <td>{target.x}</td>
-      <td>{target.y}</td>
-      <td>{target.theta}</td>
+      <td>{target.x.toFixed(3)}</td>
+      <td>{target.y.toFixed(3)}</td>
+      <td>{target.theta.toFixed(2)}</td>
+      <td style={{ minWidth: '70px' }}><DeleteIcon /><DoubleArrowIcon /></td>
     </tr>
     )
   })
@@ -22,6 +25,7 @@ export default (props) => {
           <th>X</th>
           <th>Y</th>
           <th>&thetasym;</th>
+          <th style={{ background: 'transparent' }}>&nbsp;</th>
           </tr>
         </thead>
         <tbody>

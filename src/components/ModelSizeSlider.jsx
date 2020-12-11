@@ -4,9 +4,6 @@ import { Slider } from '@material-ui/core';
 
 export default (props) => {
 
-  const changeHandler = (e, val) => {
-  }
-
   return (
     <div className="">
       <h3>ROSBOT Model scale:</h3>

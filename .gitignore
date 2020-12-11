@@ -3,3 +3,5 @@ dist
 # ides:
 .vscode
 .idea
+
+compilation-stats.json
