@@ -27,6 +27,7 @@ body {
   position: fixed;
   left: 0;
   z-index: 10;
+  overflow-y: auto;
   box-shadow:
   0 2.8px 2.2px rgba(0, 0, 0, 0.034),
   0 6.7px 5.3px rgba(0, 0, 0, 0.048),
@@ -82,4 +83,8 @@ h3 {
 .dest-table td:last-of-type, .dest-table th:last-of-type {
   background: transparent;
   min-width: 70px;
+}
+
+.dest-table .active {
+  color: yellow;
 }

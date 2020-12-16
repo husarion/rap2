@@ -1,8 +1,11 @@
+// potential target is component encapsulating all the states.
+
+
 import React, { useRef } from 'react';
 import { useLoader } from 'react-three-fiber';
 import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader";
 
-import rosbotModel from '../assets/ROSBOT3.gltf';
+import rosbotModel from '../assets/ROSBOT2.gltf';
 
 export default (props) => {
   const { nodes } = useLoader(GLTFLoader, rosbotModel)

@@ -1,19 +1,24 @@
 import React, { createContext, useContext, useMemo } from "react";
 import io from "socket.io-client";
 import Worker from "../helpers/mapdata.worker.js";
+import UnitTransform from "../helpers/UnitTransform";
 
 export const SocketContext = createContext({
   mapCanvas: {},
   robotPos: {},
   mapInfo: {},
+  debugData: '',
+  externalTargets: [] // yeah for now it's uglbyt ok.
 });
 
 export const useWebsocket = () => useContext(SocketContext);
 
 export class SocketManager extends React.Component {
   state = {
+    debugData: '',
+    externalTargets: [],
     mapCanvas: this.createFakeCanvas(),
-    robotPos: { x: 0, y: 0 },
+    robotPos: { x: 0, y: 0, theta: 0 },
     mapInfo: {
       resolution: 0.01,
       originPos: {
@@ -24,7 +29,6 @@ export class SocketManager extends React.Component {
   };
 
   socket = null;
-
   worker = null;
 
   constructor(props) {
@@ -49,19 +53,19 @@ export class SocketManager extends React.Component {
     });
 
     this.socket.on("robot_pose", (data) => {
-      console.log("Robot pose - this is often", data);
+      // console.log("Robot pose - this is often", data);
       this.setState((prevState) => {
-        const res = prevState.mapInfo.resolution;
-        const ourOriginX = prevState.mapCanvas.width/2;
-        const ourOriginY = prevState.mapCanvas.height/2;
-        const originDiffX = ourOriginX + prevState.mapInfo.originPos.x/res;
-        const originDiffY = ourOriginY + prevState.mapInfo.originPos.y/res;
+        const transf = new UnitTransform(
+          { x: prevState.mapCanvas.width/2, y: prevState.mapCanvas.height/2 },
+          prevState.mapInfo.originPos,
+          prevState.mapInfo.resolution
+        )
 
-        let x = data.x_pos/res - originDiffX;
-        let y = data.y_pos/res + originDiffY;
+        const [x, y] = transf.realworldToPx(data.x_pos, data.y_pos);
 
         return {
-          robotPos: { x: x, y: y}
+          robotPos: { x: x, y: y, theta: data.theta},
+          debugData: 'x: ' + data.x_pos + ' y: ' + data.y_pos + 't: ' + data.theta
         }
       });
     })
@@ -77,6 +81,10 @@ export class SocketManager extends React.Component {
 
     this.socket.on('add_target', (data) => {
       console.log('add_target EVENT', data);
+      // so the format that is used
+
+      // yeah let's just add target simply.
+
     });
 
     this.socket.on('remove_target_by_id', (data) => {

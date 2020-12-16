@@ -1,10 +1,8 @@
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 const MiniCssExtractPlugin = require('mini-css-extract-plugin')
-const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
 const path = require('path')
 
 module.exports = {
-  mode: 'development',
   entry: {
     main: path.resolve(__dirname, './src/rap.js'),
   },
@@ -22,8 +20,6 @@ module.exports = {
     }),
 
     new MiniCssExtractPlugin(),
-    
-    new BundleAnalyzerPlugin()
   ],
 
   resolve: {

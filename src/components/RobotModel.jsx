@@ -3,7 +3,7 @@ import { useLoader } from "react-three-fiber";
 
 import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader";
 
-import rosbotModel from "../assets/ROSBOT2.gltf";
+import rosbotModel from "../assets/ROSBOT3.gltf";
 import { MeshBasicMaterial, Color } from "three";
 
 export default (props) => {
@@ -14,20 +14,18 @@ export default (props) => {
   const handlePointerOver = (e) => {
     if (!props.noDefaultHover) {
       setHover(true);
-      props.hoverOn();
+      props.hoverOn(e);
     }
   }
 
   const handlePointerOut = (e) => {
     if (!props.noDefaultHover) {
       setHover(false);
-      props.hoverOff();
+      props.hoverOff(e);
     }
   }
 
   const hoverMaterial = new MeshBasicMaterial({ color: new Color(0x0afca8)});
-
-  console.log(materials["0023_FireBrick"]);
 
   return (
     <group

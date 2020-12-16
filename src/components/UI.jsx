@@ -4,6 +4,8 @@ import DestTable from './DestTable';
 import Instructions from './Instructions';
 import Logo from './Logo';
 import ModelSizeSlider from './ModelSizeSlider';
+import AddTargetButton from './AddTargetButton';
+import LoggingButton from './LoggingButton';
 
 import { createMuiTheme, ThemeProvider } from '@material-ui/core/styles';
 
@@ -26,14 +28,38 @@ const husarionMaterialTheme = createMuiTheme({
 
 export default (props) => {
 
+  const deleteTargetById = (id) => {
+    const updatedTargets = [];
+    props.targets.forEach(t => {
+      if (t.id !== id) {
+        updatedTargets.push(t);
+      }
+    });
+
+    return updatedTargets;
+  }
+
   return (
     <div>
       <Logo />
       <Instructions />
-      <DestTable targets={props.targets} />
+      <DestTable 
+        targets={props.targets} 
+        activeTargetId={props.activeTargetId}
+        deleteButtonClickHandler={(id) => {
+          const newTargets = deleteTargetById(id);
+          props.updateTargetsHandler(newTargets);
+        }} 
+      />
       <ThemeProvider theme={husarionMaterialTheme}>
         <ModelSizeSlider 
           changeModelSizeHandler={props.changeModelSizeHandler}
+        />
+        <AddTargetButton
+          clickHandler={props.addTargetHandler}
+        />
+        <LoggingButton
+          clickHandler={props.debugModeHandler}
         />
       </ThemeProvider>
     </div>

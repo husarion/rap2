@@ -1,18 +1,21 @@
 import React from 'react';
-import DeleteIcon from '@material-ui/icons/Delete';
+import DeleteTargetButton from './DeleteTargetButton';
 import DoubleArrowIcon from '@material-ui/icons/DoubleArrow';
 
 export default (props) => {
 
   const targetRows = props.targets.map((target, i) => {
     return (
-      <tr>
-      <td>{i}</td>
-      <td>{target.x.toFixed(3)}</td>
-      <td>{target.y.toFixed(3)}</td>
-      <td>{target.theta.toFixed(2)}</td>
-      <td style={{ minWidth: '70px' }}><DeleteIcon /><DoubleArrowIcon /></td>
-    </tr>
+      <tr className={ props.activeTargetId === target.id ? 'active' : ''} key={target.id}>
+        <td>{target.id}</td>
+        <td>{target.x.toFixed(3)}</td>
+        <td>{target.y.toFixed(3)}</td>
+        <td>{target.theta.toFixed(2)}</td>
+        <td style={{ minWidth: '70px' }}>
+          <DeleteTargetButton clickHandler={() => { props.deleteButtonClickHandler(target.id) }}/>
+          <DoubleArrowIcon />
+        </td>
+      </tr>
     )
   })
 
