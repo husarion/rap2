@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useRef, useImperativeHandle } from 'react';
 import UI from './components/UI';
 import Browser from './components/Browser';
 import { SocketManager, useWebsocket } from './components/SocketManager';
@@ -13,6 +13,8 @@ export default () => {
   const [isPlacingTarget, setIsPlacingTarget] = useState(false);
   const [debugText, setDebugText] = useState('nic');
   const socketData = useWebsocket();
+
+  const browserRef = useRef();
 
   const getNextId = () => {
     setNextId(nextId + 1);
@@ -52,19 +54,26 @@ export default () => {
     setActiveTarget(null);
   }
 
+  const handleCameraReset = () => {
+    console.log(browserRef);
+    browserRef.current.resetControls();
+  }
+
   return (
     <div className="">
         <div className="sidebar">
           <UI 
             changeModelSizeHandler={(e, val) => setModelSize(val)}
             addTargetHandler={(e) => setIsPlacingTarget(!isPlacingTarget)}
-            debugModeHandler={(e) => setIsPlacingTarget(!isPlacingTarget)}
+            debugModeHandler={(e) => {}}
+            resetCameraHandler={handleCameraReset}
             targets={targets}
             activeTargetId={activeTarget}
             updateTargetsHandler={updateTargets}
           />
         </div>
-          <Browser 
+          <Browser
+            ref={browserRef}
             modelSize={modelSize}
             targets={targets}
             addTargetHandler={addTarget}

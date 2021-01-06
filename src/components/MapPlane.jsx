@@ -16,7 +16,6 @@ export default (props) => {
       <planeGeometry
         width={1}
         height={1}
-        position={(0, -300, 0)}
         onUpdate={onu}
       />
       <meshBasicMaterial attach="material">

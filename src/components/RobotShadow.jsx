@@ -2,7 +2,8 @@ import React, { useRef } from 'react';
 import { useLoader } from 'react-three-fiber';
 import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader";
 
-import rosbotModel from '../assets/ROSBOT3.gltf';
+import rosbotModel from '../assets/ROSBOT_real.gltf';
+import RotationPickerArrow from './RotationPickerArrow';
 
 export default (props) => {
   const { nodes } = useLoader(GLTFLoader, rosbotModel)
@@ -10,6 +11,7 @@ export default (props) => {
 
   return (
     <group ref={group} {...props} dispose={null} scale={[props.scale, props.scale, props.scale]}>
+      { props.arrowVisible && <RotationPickerArrow begin={props.position} end={props.arrowPos} />}
       <mesh geometry={nodes.mesh_0.geometry}>
         <meshBasicMaterial color={0x00ff00} />
       </mesh>

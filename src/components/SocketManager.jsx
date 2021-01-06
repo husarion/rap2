@@ -42,7 +42,7 @@ export class SocketManager extends React.Component {
       ctx.putImageData(e.data.imagedata, 0, 0);
     }
 
-    this.socket = io("http://localhost:3003/"); // for testing with no robot
+    this.socket = io("http://192.168.1.14:3003/"); // for testing with no robot
     // this.socket = io();
 
     this.socket.on("raw_map_data", (mapdata) => {

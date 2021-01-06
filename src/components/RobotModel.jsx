@@ -3,7 +3,7 @@ import { useLoader } from "react-three-fiber";
 
 import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader";
 
-import rosbotModel from "../assets/ROSBOT3.gltf";
+import rosbotModel from "../assets/ROSBOT_real.gltf";
 import { MeshBasicMaterial, Color } from "three";
 
 export default (props) => {
@@ -36,11 +36,12 @@ export default (props) => {
       onPointerOver={handlePointerOver}
       onPointerOut={handlePointerOut}
     >
+      <arrowHelper args={[undefined, undefined, undefined, 0xff0000]}/>
       <mesh
         material={
           hovered
             ? hoverMaterial
-            : materials["0023_FireBrick"]
+            : materials["0137_Black"]
         }
         geometry={nodes.mesh_0.geometry}
       />
@@ -57,7 +58,7 @@ export default (props) => {
         geometry={nodes.mesh_0_3.geometry}
       />
       <mesh
-        material={materials["0137_Black"]}
+        material={materials["0023_FireBrick"]}
         geometry={nodes.mesh_0_4.geometry}
       />
     </group>

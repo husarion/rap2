@@ -59,6 +59,18 @@ body {
   margin-bottom: 1rem;
 }
 
+.sidebar::after {
+  content: '';
+  display: block;
+  height: 100%;
+  width: 0.75rem;
+  background-color: #444;
+  position: absolute;
+  right: 0;
+  top: 0;
+  cursor: col-resize;
+}
+
 h3 {
   font-weight: normal;
   font-size: 1.1rem;

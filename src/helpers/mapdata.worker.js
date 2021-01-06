@@ -13,6 +13,7 @@ function drawMap(mapdata) {
   for (var i = 0; i < len; i++) {
     
     if (mapdata.data[i] == -1) {
+      // ctx.fillStyle = "#dfdfdf"; // lightgray
       imageData.data[i*4]   = 0xdf;
       imageData.data[i*4+1] = 0xdf;
       imageData.data[i*4+2] = 0xdf;
@@ -28,21 +29,13 @@ function drawMap(mapdata) {
     }
     
     if (mapdata.data[i] == 100) {
+      // ctx.fillStyle = "#111111"; // almost black
       imageData.data[i*4]   = 0x11;
       imageData.data[i*4+1] = 0x11;
       imageData.data[i*4+2] = 0x11;
       imageData.data[i*4+3] = 0xff;
-      // ctx.fillStyle = "#111111";
     }
   }
 
   return imageData;
-
-  // ctx.fillRect(
-  //   i % mapdata.info.width,
-  //   // mapdata.info.height - 1 - (Math.floor(i / mapdata.info.width)),
-  //   Math.floor(i / mapdata.info.width),
-  //   1,
-  //   1
-  // );
 }
