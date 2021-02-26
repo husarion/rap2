@@ -3,12 +3,12 @@ import React, { useState } from "react";
 import DestTable from "./DestTable";
 import Instructions from "./Instructions";
 import Logo from "./Logo";
-import ModelSizeSlider from "./ModelSizeSlider";
 import AddTargetButton from "./buttons/AddTargetButton";
 import LoggingButton from "./LoggingButton";
 import ResetCameraButton from "./buttons/ResetCameraButton";
 
 import { createMuiTheme, ThemeProvider } from "@material-ui/core/styles";
+import ConnectionIndicator from "./ConnectionIndicator";
 
 const husarionMaterialTheme = createMuiTheme({
   palette: {
@@ -58,10 +58,8 @@ export default (props) => {
     <div>
       <Logo />
       <Instructions />
+      <ConnectionIndicator />
       <ThemeProvider theme={husarionMaterialTheme}>
-        <ModelSizeSlider
-          changeModelSizeHandler={props.changeModelSizeHandler}
-        />
         <AddTargetButton clickHandler={props.addTargetHandler} />
         <LoggingButton clickHandler={props.debugModeHandler} />
         <ResetCameraButton clickHandler={props.resetCameraHandler} />

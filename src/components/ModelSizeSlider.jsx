@@ -1,6 +1,8 @@
 import React from 'react';
 import { Slider } from '@material-ui/core';
 
+// model size slider is not useful anymore. we need one size. but how to measure?
+
 export default (props) => {
 
   return (

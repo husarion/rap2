@@ -3,13 +3,20 @@ import { useLoader } from "react-three-fiber";
 
 import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader";
 
-import rosbotModel from "../assets/ROSBOT_real.gltf";
+import rosbotModel from "../assets/ROSBOT_realSize_fix1.gltf";
+import rosbotModelHover from "../assets/ROSBOT_realSize_hover.gltf";
 import { MeshBasicMaterial, Color } from "three";
 
 export default (props) => {
+  let hoverModelObj = useLoader(GLTFLoader, rosbotModelHover);
+  
+  let nodes2 = Object.assign({}, hoverModelObj.nodes);
+  let materials2 = Object.assign({}, hoverModelObj.materials);
+  
+  // will this thing be loaded over and over? I am unsure.
   const { nodes, materials } = useLoader(GLTFLoader, rosbotModel);
   const group = useRef();
-  const [hovered, setHover] = useState(false);
+  const [hover, setHover] = useState(false);
 
   const handlePointerOver = (e) => {
     if (!props.noDefaultHover) {
@@ -25,42 +32,36 @@ export default (props) => {
     }
   }
 
-  const hoverMaterial = new MeshBasicMaterial({ color: new Color(0x0afca8)});
+  const hoverGroup = (<group ref={group} {...props} dispose={null} scale={[props.scale, props.scale, props.scale]}
+    onPointerOver={handlePointerOver}
+    onPointerOut={handlePointerOut}>
+    <mesh material={materials2['Color I08']} geometry={nodes2.mesh_0.geometry} />
+    <mesh material={materials2['0135_DarkGray']} geometry={nodes2.mesh_0_1.geometry} />
+    <mesh material={materials2['0136_Charcoal']} geometry={nodes2.mesh_0_2.geometry} />
+    <mesh material={materials2['Color I07']} geometry={nodes2.mesh_0_3.geometry} />
+    <mesh material={materials2['0137_Black']} geometry={nodes2.mesh_0_4.geometry} />
+    <mesh material={materials2['0023_FireBrick']} geometry={nodes2.mesh_0_5.geometry} />
+    <mesh material={materials2['Color I06']} geometry={nodes2.mesh_0_6.geometry} />
+    <mesh material={materials2['Color I03']} geometry={nodes2.mesh_0_7.geometry} />
+  </group>);
+
+  const normalGroup = (<group
+    ref={group}
+    {...props}
+    dispose={null}
+    scale={[props.scale, props.scale, props.scale]}
+    onPointerOver={handlePointerOver}
+    onPointerOut={handlePointerOut}
+  >
+    {/* <arrowHelper args={[undefined, undefined, 0.5, 0xff0000]}/> */}
+    <mesh material={materials["0137_Black"]} geometry={nodes.mesh_0.geometry}/>
+    <mesh material={materials["0136_Charcoal"]} geometry={nodes.mesh_0_1.geometry}/>
+    <mesh material={materials["0135_DarkGray"]} geometry={nodes.mesh_0_2.geometry}/>
+    <mesh material={materials["0131_Silver"]} geometry={nodes.mesh_0_3.geometry}/>
+    <mesh material={materials["0023_FireBrick"]} geometry={nodes.mesh_0_4.geometry}/>
+  </group>);
 
   return (
-    <group
-      ref={group}
-      {...props}
-      dispose={null}
-      scale={[props.scale, props.scale, props.scale]}
-      onPointerOver={handlePointerOver}
-      onPointerOut={handlePointerOut}
-    >
-      <arrowHelper args={[undefined, undefined, undefined, 0xff0000]}/>
-      <mesh
-        material={
-          hovered
-            ? hoverMaterial
-            : materials["0137_Black"]
-        }
-        geometry={nodes.mesh_0.geometry}
-      />
-      <mesh
-        material={materials["0136_Charcoal"]}
-        geometry={nodes.mesh_0_1.geometry}
-      />
-      <mesh
-        material={materials["0135_DarkGray"]}
-        geometry={nodes.mesh_0_2.geometry}
-      />
-      <mesh
-        material={materials["0131_Silver"]}
-        geometry={nodes.mesh_0_3.geometry}
-      />
-      <mesh
-        material={materials["0023_FireBrick"]}
-        geometry={nodes.mesh_0_4.geometry}
-      />
-    </group>
+    hover ? hoverGroup : normalGroup
   );
 };

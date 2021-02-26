@@ -1,8 +1,7 @@
 import React, { useRef, useState, useImperativeHandle, Suspense, forwardRef } from "react";
 
-
 import { Canvas } from "react-three-fiber";
-import { OrbitControls, OrthographicCamera, Line } from "drei";
+import { OrbitControls, OrthographicCamera } from "drei";
 
 import { useWebsocket } from "./SocketManager";
 import MapPlane from "./MapPlane";
@@ -10,6 +9,8 @@ import RobotModel from "./RobotModel";
 import RobotShadow from "./RobotShadow";
 import UnitTransform from "../helpers/UnitTransform";
 import Axis from "./Axis";
+
+import calculateNewTheta from '../helpers/calculateNewTheta';
 
 // Coords: should be an enum; but JS does not have enums.
 // TS has some though.
@@ -34,16 +35,14 @@ const Browser = forwardRef((props, ref) => {
 
   const [coordSystemCenterX, coordSystemCenterY] = transf.realworldToPx(0, 0);
 
-  const controls = useRef();
-  console.log("kurde,", ref);
+  const controlsRef = useRef();
   useImperativeHandle(ref,
     () => ({
       resetControls: () => {
-        controls.current.reset();
-        controls.current.target.set(coordSystemCenterX, 0, coordSystemCenterY);
+        controlsRef.current.reset();
+        controlsRef.current.target.set(coordSystemCenterX, 0, coordSystemCenterY);
       }
     }));
-
 
   const targets = props.targets.map((target) => {
     const [realWorldX, realWorldY] = transf.realworldToPx(target.x, target.y);
@@ -65,23 +64,8 @@ const Browser = forwardRef((props, ref) => {
 
   const handlePointerMove = (e) => {
     if (isChoosingRotation) {
-      // TODO refactor.
-      const xDiff = e.point.x - ghostPos[X];
-      const yDiff = e.point.z - ghostPos[Z];
-      const xDiffSgn = Math.sign(xDiff);
-      const yDiffSgn = Math.sign(yDiff);
-      let newTheta = Math.atan(xDiff / yDiff);
-      if (yDiffSgn === -1) {
-        if (xDiffSgn === 1) {
-          newTheta += Math.PI;
-        } else if (xDiffSgn === -1) {
-          newTheta -= Math.PI;
-        } else {
-          newTheta = Math.PI;
-        }
-      }
+      const newTheta = calculateNewTheta(ghostPos[X], ghostPos[Z], e.point.x, e.point.z);
       setRotationPickerArrowPos([e.point.x, 0, e.point.z]);
-      // console.log(newTheta, xDiffSgn, yDiffSgn);
       setGhostRotation([0, newTheta, 0]);
     } else if (e.shiftKey || props.isPlacingTarget) {
       setGhostPos([e.point.x, 0, e.point.z]);
@@ -154,8 +138,7 @@ const Browser = forwardRef((props, ref) => {
           position={[0, 0, 500]}
         />
 
-        <ambientLight color={0xcccccc} />
-        <directionalLight position={[0, 1, 1]} />
+        <ambientLight color={0xffffff} />
 
         <MapPlane
           pointerDownHandler={handlePointerDown}
@@ -165,7 +148,7 @@ const Browser = forwardRef((props, ref) => {
         />
 
         <OrbitControls
-          ref={controls}
+          ref={controlsRef}
           minDistance={1}
           maxDistance={100000}
           minAzimuthAngle={0}

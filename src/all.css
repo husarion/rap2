@@ -59,8 +59,7 @@ body {
   margin-bottom: 1rem;
 }
 
-.sidebar::after {
-  content: '';
+.sidebar-resizer {
   display: block;
   height: 100%;
   width: 0.75rem;
