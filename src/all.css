@@ -19,6 +19,7 @@ body {
 }
 
 .sidebar {
+  display: none;
   background: rgb(36, 36, 36);
   color: #fff;
   padding: 1rem;
@@ -98,4 +99,11 @@ h3 {
 
 .dest-table .active {
   color: yellow;
+}
+
+@media screen and (min-width: 1000px) and (orientation: landscape) {
+  /* desktop or tablet mode */
+  .sidebar {
+    display: block;
+  }
 }

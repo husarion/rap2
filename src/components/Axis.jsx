@@ -1,5 +1,5 @@
 import React from "react";
-import { Line, Sphere } from "drei";
+import { Line } from "drei";
 
 export default (props) => {
   const elevationAbovePlane = 1;
@@ -7,6 +7,7 @@ export default (props) => {
   const color = 0xaaaaaa;
   const lineWidth = 0.5;
   const pointLineLength = 10;
+  
   return (
     <group>
       <Line

@@ -5,7 +5,6 @@ import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader";
 
 import rosbotModel from "../assets/ROSBOT_realSize_fix1.gltf";
 import rosbotModelHover from "../assets/ROSBOT_realSize_hover.gltf";
-import { MeshBasicMaterial, Color } from "three";
 
 export default (props) => {
   let hoverModelObj = useLoader(GLTFLoader, rosbotModelHover);

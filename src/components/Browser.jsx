@@ -1,4 +1,4 @@
-import React, { useRef, useState, useImperativeHandle, Suspense, forwardRef } from "react";
+import React, { useRef, useState, useImperativeHandle, Suspense, forwardRef, useEffect } from "react";
 
 import { Canvas } from "react-three-fiber";
 import { OrbitControls, OrthographicCamera } from "drei";
@@ -11,6 +11,8 @@ import UnitTransform from "../helpers/UnitTransform";
 import Axis from "./Axis";
 
 import calculateNewTheta from '../helpers/calculateNewTheta';
+
+import { TOUCH } from 'three';
 
 // Coords: should be an enum; but JS does not have enums.
 // TS has some though.
@@ -27,6 +29,8 @@ const Browser = forwardRef((props, ref) => {
 
   const socketData = useWebsocket();
 
+
+
   const transf = new UnitTransform(
     { x: socketData.mapCanvas.width / 2, y: socketData.mapCanvas.height / 2 },
     socketData.mapInfo.originPos,
@@ -36,6 +40,7 @@ const Browser = forwardRef((props, ref) => {
   const [coordSystemCenterX, coordSystemCenterY] = transf.realworldToPx(0, 0);
 
   const controlsRef = useRef();
+
   useImperativeHandle(ref,
     () => ({
       resetControls: () => {
@@ -43,6 +48,19 @@ const Browser = forwardRef((props, ref) => {
         controlsRef.current.target.set(coordSystemCenterX, 0, coordSystemCenterY);
       }
     }));
+
+
+  useEffect( () => {
+    // 310:            TOUCH_ROTATE: 3,
+    // 311:            TOUCH_PAN: 4,
+    // 312:            TOUCH_DOLLY_PAN: 5,
+    // 313:            TOUCH_DOLLY_ROTATE: 6
+    // if (controlsRef.current) {
+    //   controlsRef.current.touches.ONE = 3;
+    //   controlsRef.current.touches.TWO = 5;
+    // }
+    console.log("effect", TOUCH.PAN, TOUCH.PAN_ROTATE)
+  });
 
   const targets = props.targets.map((target) => {
     const [realWorldX, realWorldY] = transf.realworldToPx(target.x, target.y);
@@ -157,6 +175,7 @@ const Browser = forwardRef((props, ref) => {
           maxPolarAngle={0}
           maxPolarAngle={0}
           enabled={!isChoosingRotation}
+          touches={{ ONE: TOUCH.PAN, TWO: TOUCH.DOLLY_ROTATE }}
         />
       </Canvas>
     </div>
@@ -164,3 +183,9 @@ const Browser = forwardRef((props, ref) => {
 });
 
 export default Browser;
+
+
+// 310:            TOUCH_ROTATE: 3,
+// 311:            TOUCH_PAN: 4,
+// 312:            TOUCH_DOLLY_PAN: 5,
+// 313:            TOUCH_DOLLY_ROTATE: 6

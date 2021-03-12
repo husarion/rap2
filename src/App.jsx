@@ -5,6 +5,7 @@ import { useWebsocket } from './components/SocketManager';
 import DebugArea from './components/DebugArea';
 import UnitTransform from './helpers/UnitTransform';
 import SidebarResizer from './components/SidebarResizer';
+import calculateNewSidebarWidth from './helpers/calculateNewSidebarWidth';
 
 export default () => {
   const [targets, setTargets] = useState([]);
@@ -12,11 +13,7 @@ export default () => {
   const [nextId, setNextId] = useState(0);
   const [isPlacingTarget, setIsPlacingTarget] = useState(false);
   const [debugText, setDebugText] = useState('nic');
-
-  // OK it works... now I need to clean this up...
-
   const [sidebarWidth, setSidebarWidth] = useState(325);
-  // const [mouseX, setMouseX] = useState(0);
   const isResizingSidebar = useRef(null);
 
   const socketData = useWebsocket();
@@ -24,13 +21,7 @@ export default () => {
   const browserRef = useRef();
   const sidebarRef = useRef();
 
-  const calculateNewSidebarWidth = (currentX) => {
-    // simplicity of this function is based on an assumption
-    // that sidebar is positioned on the left side of the viewport
-    // hence we only need cursor X position to effectively resize.
-    const minSidebarWidth = 300;
-    return (minSidebarWidth > currentX) ? minSidebarWidth : currentX;
-  }
+
   
   useEffect( () => {
     window.addEventListener('mouseup', function () {
@@ -46,6 +37,7 @@ export default () => {
     });
   }, []);
 
+  // could it be a coustom hook?
   const getNextId = () => {
     setNextId(nextId + 1);
     return nextId;
@@ -62,14 +54,17 @@ export default () => {
     );
 
     const [realWorldX, realWorldY] = transf.pxToRealworld(xOnMap, yOnMap)
+    
+    const idForNewTarget = getNextId();
 
     setTargets([...targets, {
       targetPos: [xOnMap, 0, yOnMap],
       x: realWorldX,
       y: realWorldY,
       theta: theta,
-      id: getNextId()
-    }])
+      id: idForNewTarget,
+      label: idForNewTarget // user can name it anything they want later.
+    }]);
   }
 
   const updateTargets = (newTargets) => {
@@ -89,7 +84,6 @@ export default () => {
   }
 
   const handleCameraReset = () => {
-    console.log(browserRef);
     browserRef.current.resetControls();
   }
 

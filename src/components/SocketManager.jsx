@@ -47,9 +47,7 @@ export class SocketManager extends React.Component {
 
     this.socket.on("raw_map_data", (mapdata) => {
       console.log("raw_map_data EVENT", mapdata);
-      // this.handleRawMapData(mapdata);
       this.handleRawMapDataWebWorker(mapdata);
-
     });
 
     this.socket.on("robot_pose", (data) => {
@@ -114,54 +112,12 @@ export class SocketManager extends React.Component {
 
   handleRawMapDataWebWorker(mapdata) {
     const canvas = document.createElement("canvas");
-    const ctx = canvas.getContext("2d");
 
     canvas.width = mapdata.info.width;
     canvas.height = mapdata.info.height;
 
     console.log("Posting to worker.")
     this.worker.postMessage({ mapdata: mapdata})
-
-    this.setState({
-      mapCanvas: canvas,
-      mapInfo: {
-        resolution: mapdata.info.resolution,
-        originPos: {
-          x: mapdata.info.origin.position.x,
-          y: mapdata.info.origin.position.y
-        }
-      }
-    });
-  }
-
-  handleRawMapData(mapdata) {
-    const canvas = document.createElement("canvas");
-    const ctx = canvas.getContext("2d");
-
-    canvas.width = mapdata.info.width;
-    canvas.height = mapdata.info.height;
-
-    var len = mapdata.data.length;
-
-    for (var i = 0; i < len; i++) {
-      if (mapdata.data[i] == -1) {
-        ctx.fillStyle = "#dfdfdf";
-      }
-      if (mapdata.data[i] == 0) {
-        ctx.fillStyle = "#c98816"; // red/orange
-      }
-      if (mapdata.data[i] == 100) {
-        ctx.fillStyle = "#111111";
-      }
-
-      ctx.fillRect(
-        i % mapdata.info.width,
-        // mapdata.info.height - 1 - (Math.floor(i / mapdata.info.width)),
-        Math.floor(i / mapdata.info.width),
-        1,
-        1
-      );
-    }
 
     this.setState({
       mapCanvas: canvas,
