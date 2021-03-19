@@ -1,5 +1,5 @@
 import React, {
-  useRef, useState, useImperativeHandle, Suspense, forwardRef, useEffect,
+  useRef, useState, useImperativeHandle, Suspense, forwardRef,
 } from 'react';
 
 import { Canvas } from 'react-three-fiber';
@@ -10,6 +10,7 @@ import { useWebsocket } from './SocketManager';
 import MapPlane from './MapPlane';
 import RobotModel from './RobotModel';
 import RobotShadow from './RobotShadow';
+import Targets from './Targets';
 import UnitTransform from '../helpers/UnitTransform';
 import Axis from './Axis';
 
@@ -22,12 +23,6 @@ const Y = 1;
 const Z = 2;
 
 const Browser = forwardRef((props, ref) => {
-  const [isChoosingRotation, setIsChoosingRotation] = useState(false);
-  const [ghostVisible, setGhostVisible] = useState(false);
-  const [ghostPos, setGhostPos] = useState([]);
-  const [ghostRotation, setGhostRotation] = useState([0, 0, 0]);
-  const [rotationPickerArrowPos, setRotationPickerArrowPos] = useState([]);
-
   const socketData = useWebsocket();
 
   const transf = new UnitTransform(
@@ -48,27 +43,11 @@ const Browser = forwardRef((props, ref) => {
       },
     }));
 
-  useEffect(() => {
-    // console.log('effect', TOUCH.PAN, TOUCH.PAN_ROTATE);
-  });
-
-  const targets = props.targets.map((target) => {
-    const [realWorldX, realWorldY] = transf.realworldToPx(target.x, target.y);
-    return (
-      <RobotModel
-        key={target.id}
-        scale={props.modelSize}
-        position={[realWorldX, 0, realWorldY]}
-        rotation={[0, target.theta, 0]}
-        hoverOn={() => {
-          props.targetHoverOn(target.id);
-        }}
-        hoverOff={() => {
-          props.targetHoverOff();
-        }}
-      />
-    );
-  });
+  const [isChoosingRotation, setIsChoosingRotation] = useState(false);
+  const [ghostVisible, setGhostVisible] = useState(false);
+  const [ghostPos, setGhostPos] = useState([]);
+  const [ghostRotation, setGhostRotation] = useState([0, 0, 0]);
+  const [rotationPickerArrowPos, setRotationPickerArrowPos] = useState([]);
 
   const handlePointerMove = (e) => {
     if (isChoosingRotation) {
@@ -129,7 +108,13 @@ const Browser = forwardRef((props, ref) => {
           )}
         </Suspense>
 
-        {targets}
+        <Targets
+          targets={props.targets}
+          unitTransform={transf}
+          modelSize={props.modelSize}
+          targetHoverOn={(id) => props.targetHoverOn(id)}
+          targetHoverOff={() => props.targetHoverOff()}
+        />
 
         <Axis
           centerX={coordSystemCenterX}

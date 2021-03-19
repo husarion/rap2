@@ -1,6 +1,6 @@
 import React, { createContext, useContext, useMemo } from 'react';
 import io from 'socket.io-client';
-import Worker from '../helpers/mapdata.worker.js';
+import Worker from '../helpers/mapdata.worker';
 import UnitTransform from '../helpers/UnitTransform';
 
 export const SocketContext = createContext({

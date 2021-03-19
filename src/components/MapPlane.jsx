@@ -1,17 +1,17 @@
-import React from "react";
+import React from 'react';
 
 export default (props) => {
   const onu = (s) => {
     s.needsUpdate = true;
-  }
+  };
 
   return (
     <mesh
-    rotation={[-Math.PI / 2, 0, 0]}
-    scale={[props.mapCanvas.width, props.mapCanvas.height, 1]}
-    onPointerMove={props.pointerMoveHandler}
-    onPointerDown={props.pointerDownHandler}
-    onPointerUp={props.pointerUpHandler}
+      rotation={[-Math.PI / 2, 0, 0]}
+      scale={[props.mapCanvas.width, props.mapCanvas.height, 1]}
+      onPointerMove={props.pointerMoveHandler}
+      onPointerDown={props.pointerDownHandler}
+      onPointerUp={props.pointerUpHandler}
     >
       <planeGeometry
         width={1}
