@@ -126,7 +126,8 @@ export default (props) => {
 
   return (
     <div className="dest-table">
-      Table cells are editable - adjust the values as needed and press Enter to commit changes.
+      <h3>Targets:</h3>
+
       <table>
         <thead>
           <tr>
@@ -139,6 +140,10 @@ export default (props) => {
         </thead>
         <tbody>{targetRows}</tbody>
       </table>
+
+      <div className="guide-text">
+        Table cells are editable - adjust the values as needed and press Enter to commit changes.
+      </div>
     </div>
   );
 };

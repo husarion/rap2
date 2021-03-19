@@ -1,18 +1,19 @@
-import React, { useRef, useState, useImperativeHandle, Suspense, forwardRef, useEffect } from "react";
+import React, {
+  useRef, useState, useImperativeHandle, Suspense, forwardRef, useEffect,
+} from 'react';
 
-import { Canvas } from "react-three-fiber";
-import { OrbitControls, OrthographicCamera } from "drei";
-
-import { useWebsocket } from "./SocketManager";
-import MapPlane from "./MapPlane";
-import RobotModel from "./RobotModel";
-import RobotShadow from "./RobotShadow";
-import UnitTransform from "../helpers/UnitTransform";
-import Axis from "./Axis";
-
-import calculateNewTheta from '../helpers/calculateNewTheta';
+import { Canvas } from 'react-three-fiber';
+import { OrbitControls, OrthographicCamera } from 'drei';
 
 import { TOUCH } from 'three';
+import { useWebsocket } from './SocketManager';
+import MapPlane from './MapPlane';
+import RobotModel from './RobotModel';
+import RobotShadow from './RobotShadow';
+import UnitTransform from '../helpers/UnitTransform';
+import Axis from './Axis';
+
+import calculateNewTheta from '../helpers/calculateNewTheta';
 
 // Coords: should be an enum; but JS does not have enums.
 // TS has some though.
@@ -29,12 +30,10 @@ const Browser = forwardRef((props, ref) => {
 
   const socketData = useWebsocket();
 
-
-
   const transf = new UnitTransform(
     { x: socketData.mapCanvas.width / 2, y: socketData.mapCanvas.height / 2 },
     socketData.mapInfo.originPos,
-    socketData.mapInfo.resolution
+    socketData.mapInfo.resolution,
   );
 
   const [coordSystemCenterX, coordSystemCenterY] = transf.realworldToPx(0, 0);
@@ -46,20 +45,11 @@ const Browser = forwardRef((props, ref) => {
       resetControls: () => {
         controlsRef.current.reset();
         controlsRef.current.target.set(coordSystemCenterX, 0, coordSystemCenterY);
-      }
+      },
     }));
 
-
-  useEffect( () => {
-    // 310:            TOUCH_ROTATE: 3,
-    // 311:            TOUCH_PAN: 4,
-    // 312:            TOUCH_DOLLY_PAN: 5,
-    // 313:            TOUCH_DOLLY_ROTATE: 6
-    // if (controlsRef.current) {
-    //   controlsRef.current.touches.ONE = 3;
-    //   controlsRef.current.touches.TWO = 5;
-    // }
-    console.log("effect", TOUCH.PAN, TOUCH.PAN_ROTATE)
+  useEffect(() => {
+    // console.log('effect', TOUCH.PAN, TOUCH.PAN_ROTATE);
   });
 
   const targets = props.targets.map((target) => {
@@ -70,13 +60,13 @@ const Browser = forwardRef((props, ref) => {
         scale={props.modelSize}
         position={[realWorldX, 0, realWorldY]}
         rotation={[0, target.theta, 0]}
-        hoverOn={(e) => {
+        hoverOn={() => {
           props.targetHoverOn(target.id);
         }}
-        hoverOff={(e) => {
+        hoverOff={() => {
           props.targetHoverOff();
         }}
-      ></RobotModel>
+      />
     );
   });
 
@@ -141,9 +131,9 @@ const Browser = forwardRef((props, ref) => {
 
         {targets}
 
-        <Axis 
-          centerX={coordSystemCenterX} 
-          centerY={coordSystemCenterY} 
+        <Axis
+          centerX={coordSystemCenterX}
+          centerY={coordSystemCenterY}
           oneMeterX={oneMeterX}
           oneMeterY={oneMeterY}
         />
@@ -172,7 +162,7 @@ const Browser = forwardRef((props, ref) => {
           minAzimuthAngle={0}
           maxAzimuthAngle={0}
           dampingFactor={0.2}
-          maxPolarAngle={0}
+          minPolarAngle={0}
           maxPolarAngle={0}
           enabled={!isChoosingRotation}
           touches={{ ONE: TOUCH.PAN, TWO: TOUCH.DOLLY_ROTATE }}
@@ -183,9 +173,3 @@ const Browser = forwardRef((props, ref) => {
 });
 
 export default Browser;
-
-
-// 310:            TOUCH_ROTATE: 3,
-// 311:            TOUCH_PAN: 4,
-// 312:            TOUCH_DOLLY_PAN: 5,
-// 313:            TOUCH_DOLLY_ROTATE: 6

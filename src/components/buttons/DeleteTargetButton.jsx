@@ -10,10 +10,11 @@ export default (props) => {
   // }
 
   return (
-    <DeleteIcon className={hovered ? 'active' : ''}
+    <DeleteIcon
+      className={hovered ? 'active' : ''}
       onPointerOver={() => setHovered(true)}
       onPointerOut={() => setHovered(false)}
-      onClick={props.clickHandler} />
+      onClick={props.clickHandler}
+    />
   );
-}
-
+};

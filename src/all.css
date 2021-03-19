@@ -84,6 +84,7 @@ h3 {
 .dest-table table {
   width: 100%;
   text-align: center;
+  margin-bottom: 1rem;
 }
 
 .dest-table td, .dest-table th {
@@ -101,9 +102,45 @@ h3 {
   color: yellow;
 }
 
+.dest-table .guide-text {
+  font-size: smaller;
+  color: #ddd;
+}
+
+
+.mobile-button-cnt {
+  position: fixed;
+  width: 80px;
+  height: 80px;
+  background-color: #c62828;
+  bottom: 1.5rem;
+  left: 1.5rem;
+  z-index: 200;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.mobile-button-cnt .opened {
+  display: none;
+}
+
+.mobile-button-cnt.active .opened {
+  display: block;
+}
+
+.mobile-button-cnt.active .closed {
+  display: none;
+}
+
 @media screen and (min-width: 1000px) and (orientation: landscape) {
   /* desktop or tablet mode */
   .sidebar {
     display: block;
+  }
+
+  .mobile-button-cnt {
+    display: none;
   }
 }

@@ -1,5 +1,5 @@
-import React from "react";
-import { Line } from "drei";
+import React from 'react';
+import { Line } from 'drei';
 
 export default (props) => {
   const elevationAbovePlane = 1;
@@ -7,7 +7,7 @@ export default (props) => {
   const color = 0xaaaaaa;
   const lineWidth = 0.5;
   const pointLineLength = 10;
-  
+
   return (
     <group>
       <Line
@@ -47,8 +47,8 @@ export default (props) => {
         color={color}
         lineWidth={lineWidth}
         points={[
-          [props.oneMeterX, elevationAbovePlane, props.centerY - pointLineLength/2],
-          [props.oneMeterX, elevationAbovePlane, props.centerY + pointLineLength/2],
+          [props.oneMeterX, elevationAbovePlane, props.centerY - pointLineLength / 2],
+          [props.oneMeterX, elevationAbovePlane, props.centerY + pointLineLength / 2],
         ]}
       />
 
@@ -56,8 +56,8 @@ export default (props) => {
         color={color}
         lineWidth={lineWidth}
         points={[
-          [props.centerX - pointLineLength/2, elevationAbovePlane, props.oneMeterY],
-          [props.centerX + pointLineLength/2, elevationAbovePlane, props.oneMeterY],
+          [props.centerX - pointLineLength / 2, elevationAbovePlane, props.oneMeterY],
+          [props.centerX + pointLineLength / 2, elevationAbovePlane, props.oneMeterY],
         ]}
       />
     </group>

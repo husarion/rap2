@@ -7,18 +7,18 @@ export default (props) => {
   const handleClick = (e) => {
     setActive(!active);
     props.clickHandler(e);
-  }
+  };
 
   return (
     <div className="">
       <h3>Debug button:</h3>
-      <Button 
-        variant={ active ? "outlined" : "contained"} 
-        color="primary" 
-        onClick={handleClick}>
+      <Button
+        variant={active ? 'outlined' : 'contained'}
+        color="primary"
+        onClick={handleClick}
+      >
         turn on log
       </Button>
     </div>
   );
-}
-
+};

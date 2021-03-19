@@ -1,12 +1,7 @@
-import React, { useState } from 'react';
+import React from 'react';
 
-export default (props) => {
-  // const [active, setActive] = useState(false);
-
-  return (
-    <div className="">
-      <h3>Connected</h3>
-    </div>
-  );
-}
-
+export default () => (
+  <div className="">
+    <h3>Connected</h3>
+  </div>
+);

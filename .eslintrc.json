@@ -1,0 +1,29 @@
+{
+    "env": {
+        "browser": true,
+        "es2021": true
+    },
+    "extends": [
+        "plugin:react/recommended",
+        "plugin:react-hooks/recommended",
+        "airbnb"
+    ],
+    "parser": "@babel/eslint-parser",
+    "parserOptions": {
+        "ecmaFeatures": {
+            "jsx": true
+        },
+        "ecmaVersion": 12,
+        "sourceType": "module"
+    },
+    "plugins": [
+        "react"
+    ],
+    "rules": {
+        "linebreak-style": [2, "windows"],
+        "react/prop-types": 0,
+        "react/destructuring-assignment": [1, "never"],
+        "jsx-a11y/click-events-have-key-events": 0,
+        "jsx-a11y/interactive-supports-focus": 0
+    }
+}

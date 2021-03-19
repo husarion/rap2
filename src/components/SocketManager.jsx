@@ -1,14 +1,14 @@
-import React, { createContext, useContext, useMemo } from "react";
-import io from "socket.io-client";
-import Worker from "../helpers/mapdata.worker.js";
-import UnitTransform from "../helpers/UnitTransform";
+import React, { createContext, useContext, useMemo } from 'react';
+import io from 'socket.io-client';
+import Worker from '../helpers/mapdata.worker.js';
+import UnitTransform from '../helpers/UnitTransform';
 
 export const SocketContext = createContext({
   mapCanvas: {},
   robotPos: {},
   mapInfo: {},
   debugData: '',
-  externalTargets: [] // yeah for now it's uglbyt ok.
+  externalTargets: [], // yeah for now it's uglbyt ok.
 });
 
 export const useWebsocket = () => useContext(SocketContext);
@@ -23,12 +23,13 @@ export class SocketManager extends React.Component {
       resolution: 0.01,
       originPos: {
         x: 0,
-        y: 0
-      }
+        y: 0,
+      },
     },
   };
 
   socket = null;
+
   worker = null;
 
   constructor(props) {
@@ -37,40 +38,40 @@ export class SocketManager extends React.Component {
     this.worker = new Worker();
 
     this.worker.onmessage = (e) => {
-      console.log("Worker msg ", e );
+      console.log('Worker msg ', e);
       const ctx = this.state.mapCanvas.getContext('2d');
       ctx.putImageData(e.data.imagedata, 0, 0);
-    }
+    };
 
-    this.socket = io("http://192.168.1.14:3003/"); // for testing with no robot
+    this.socket = io('http://192.168.1.14:3003/'); // for testing with no robot
     // this.socket = io();
 
-    this.socket.on("raw_map_data", (mapdata) => {
-      console.log("raw_map_data EVENT", mapdata);
+    this.socket.on('raw_map_data', (mapdata) => {
+      console.log('raw_map_data EVENT', mapdata);
       this.handleRawMapDataWebWorker(mapdata);
     });
 
-    this.socket.on("robot_pose", (data) => {
+    this.socket.on('robot_pose', (data) => {
       // console.log("Robot pose - this is often", data);
       this.setState((prevState) => {
         const transf = new UnitTransform(
-          { x: prevState.mapCanvas.width/2, y: prevState.mapCanvas.height/2 },
+          { x: prevState.mapCanvas.width / 2, y: prevState.mapCanvas.height / 2 },
           prevState.mapInfo.originPos,
-          prevState.mapInfo.resolution
-        )
+          prevState.mapInfo.resolution,
+        );
 
         const [x, y] = transf.realworldToPx(data.x_pos, data.y_pos);
 
         return {
-          robotPos: { x: x, y: y, theta: data.theta},
-          debugData: 'x: ' + data.x_pos + ' y: ' + data.y_pos + 't: ' + data.theta
-        }
+          robotPos: { x, y, theta: data.theta },
+          debugData: `x: ${data.x_pos} y: ${data.y_pos}t: ${data.theta}`,
+        };
       });
-    })
+    });
 
-    this.socket.on("map_update", (data) => {
+    this.socket.on('map_update', (data) => {
       // It goes every second, and is legacy. Not very useful.
-      //console.log("map_update EVENT", data);
+      // console.log("map_update EVENT", data);
     });
 
     this.socket.on('map_file_list', (data) => {
@@ -82,7 +83,6 @@ export class SocketManager extends React.Component {
       // so the format that is used
 
       // yeah let's just add target simply.
-
     });
 
     this.socket.on('remove_target_by_id', (data) => {
@@ -111,13 +111,13 @@ export class SocketManager extends React.Component {
   }
 
   handleRawMapDataWebWorker(mapdata) {
-    const canvas = document.createElement("canvas");
+    const canvas = document.createElement('canvas');
 
     canvas.width = mapdata.info.width;
     canvas.height = mapdata.info.height;
 
-    console.log("Posting to worker.")
-    this.worker.postMessage({ mapdata: mapdata})
+    console.log('Posting to worker.');
+    this.worker.postMessage({ mapdata });
 
     this.setState({
       mapCanvas: canvas,
@@ -125,21 +125,21 @@ export class SocketManager extends React.Component {
         resolution: mapdata.info.resolution,
         originPos: {
           x: mapdata.info.origin.position.x,
-          y: mapdata.info.origin.position.y
-        }
-      }
+          y: mapdata.info.origin.position.y,
+        },
+      },
     });
   }
 
   // fake canvas for when we have no map.
   createFakeCanvas() {
-    const canvas = document.createElement("canvas");
-    const ctx = canvas.getContext("2d");
+    const canvas = document.createElement('canvas');
+    const ctx = canvas.getContext('2d');
 
     canvas.width = 1000;
     canvas.height = 1000;
 
-    ctx.fillStyle = "darkslateblue";
+    ctx.fillStyle = 'darkslateblue';
     ctx.fillRect(0, 0, 1000, 1000);
     return canvas;
   }
@@ -147,7 +147,7 @@ export class SocketManager extends React.Component {
   render() {
     return (
       <SocketContext.Provider
-        value={{...this.state}}
+        value={{ ...this.state }}
       >
         {this.props.children}
       </SocketContext.Provider>
