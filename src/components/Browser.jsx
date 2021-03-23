@@ -50,13 +50,15 @@ const Browser = forwardRef((props, ref) => {
   const [rotationPickerArrowPos, setRotationPickerArrowPos] = useState([]);
 
   const handlePointerMove = (e) => {
-    if (isChoosingRotation) {
-      const newTheta = calculateNewTheta(ghostPos[X], ghostPos[Z], e.point.x, e.point.z);
-      setRotationPickerArrowPos([e.point.x, 0, e.point.z]);
-      setGhostRotation([0, newTheta, 0]);
-    } else if (e.shiftKey || props.isPlacingTarget) {
-      setGhostPos([e.point.x, 0, e.point.z]);
-      setGhostVisible(true);
+    if (e.shiftKey || props.isPlacingTarget) {
+      if (isChoosingRotation) {
+        const newTheta = calculateNewTheta(ghostPos[X], ghostPos[Z], e.point.x, e.point.z);
+        setRotationPickerArrowPos([e.point.x, 0, e.point.z]);
+        setGhostRotation([0, newTheta, 0]);
+      } else {
+        setGhostPos([e.point.x, 0, e.point.z]);
+        setGhostVisible(true);
+      }
     } else {
       setGhostVisible(false);
     }
@@ -75,9 +77,9 @@ const Browser = forwardRef((props, ref) => {
   };
 
   const handlePointerUp = (e) => {
+    setIsChoosingRotation(false);
     if (e.shiftKey || props.isPlacingTarget) {
       props.addTargetHandler(ghostPos[X], ghostPos[Z], ghostRotation[Y]);
-      setIsChoosingRotation(false);
     }
   };
 
@@ -86,7 +88,6 @@ const Browser = forwardRef((props, ref) => {
   return (
     <div className="canvas3d">
       <Canvas gl={{ antialias: false }}>
-        {/* <axesHelper scale={[500, 500, 5000]} /> */}
         <Suspense fallback={null}>
           <RobotModel
             scale={props.modelSize}

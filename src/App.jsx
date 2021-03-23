@@ -16,7 +16,7 @@ export default () => {
   const [nextId, setNextId] = useState(0);
   const [isPlacingTarget, setIsPlacingTarget] = useState(false);
   const [debugText, setDebugText] = useState('nic');
-  const [sidebarWidth, setSidebarWidth] = useState(325);
+  const [sidebarWidth, setSidebarWidth] = useState(calculateNewSidebarWidth(325));
   const isResizingSidebar = useRef(null);
 
   const socketData = useWebsocket();

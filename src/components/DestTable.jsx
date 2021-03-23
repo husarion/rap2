@@ -1,7 +1,7 @@
-import React, { useRef } from "react";
+import React, { useRef } from 'react';
 
-import DeleteTargetButton from "./buttons/DeleteTargetButton";
-import DoubleArrowIcon from "@material-ui/icons/DoubleArrow";
+import DoubleArrowIcon from '@material-ui/icons/DoubleArrow';
+import DeleteTargetButton from './buttons/DeleteTargetButton';
 
 export default (props) => {
   // so targets should be in global state anyway... because they are ought to be held on backend...
@@ -12,11 +12,11 @@ export default (props) => {
 
   const previousLabel = useRef(null);
 
-  const saveLabel = e => {
+  const saveLabel = (e) => {
     previousLabel.current = e.currentTarget.textContent;
-  }
+  };
 
-  const toValidLabel = value => {
+  const toValidLabel = (value) => {
     // for now, we trim whitespaces and that's it.
     value = value.trim();
 
@@ -25,7 +25,7 @@ export default (props) => {
       return previousLabel.current;
     }
     return value;
-  }
+  };
 
   // it works only once, thats the problem. weird.
 
@@ -34,35 +34,35 @@ export default (props) => {
       label: toValidLabel(e.currentTarget.textContent),
     });
     window.focus(); // czemu to nie działa nie wime.
-  }
+  };
 
   const modifyX = (e, id) => {
     props.modifyTargetHandler(id, {
       x: parseFloat(e.currentTarget.textContent),
     });
-  }
+  };
 
   const modifyY = (e, id) => {
     props.modifyTargetHandler(id, {
       y: parseFloat(e.currentTarget.textContent),
     });
-  }
+  };
 
   const modifyTheta = (e, id) => {
     props.modifyTargetHandler(id, {
       theta: parseFloat(e.currentTarget.textContent),
     });
-  }
+  };
 
   // OK but why it only works once.
-  const enterToConfirm = e => {
-    if (e.key === "Enter") {
+  const enterToConfirm = (e) => {
+    if (e.key === 'Enter') {
       e.preventDefault();
       window.focus(); // why it does not work?
       return true;
-    } 
+    }
     return false;
-  }
+  };
 
   // ID must be unique.... but doesnt have to be a number...
   // the most efficient hashmap is the js obj itsefl.
@@ -73,56 +73,54 @@ export default (props) => {
 
   // <td> should simply lose focus if value is confirmed.
 
-  const targetRows = props.targets.map((target, i) => {
-    return (
-      <tr
-        className={props.activeTargetId === target.id ? "active" : ""}
-        key={target.id}
+  const targetRows = props.targets.map((target, i) => (
+    <tr
+      className={props.activeTargetId === target.id ? 'active' : ''}
+      key={target.id}
+    >
+      <td
+        contentEditable
+        suppressContentEditableWarning
+        onBlur={(e) => modifyLabel(e, target.id)}
+        onKeyPress={(e) => (enterToConfirm(e) ? modifyLabel(e, target.id) : null)}
       >
-        <td
-          contentEditable
-          suppressContentEditableWarning={true}
-          onBlur={e => modifyLabel(e, target.id)}
-          onKeyPress={e => enterToConfirm(e) ? modifyLabel(e, target.id) : null}
-        >
-          {target.label}
-        </td>
-        <td
-          contentEditable
-          suppressContentEditableWarning={true}
-          onBlur={e => modifyX(e, target.id)}
-          onFocus={saveLabel}
-          onKeyUp={e => enterToConfirm(e) ? modifyX(e, target.id) : null}
-        >
-          {target.x.toFixed(3)}
-        </td>
-        <td
-          contentEditable
-          suppressContentEditableWarning={true}
-          onBlur={e => modifyY(e, target.id)}
-          onKeyUp={e => enterToConfirm(e) ? modifyY(e, target.id) : null}
-        >
-          {target.y.toFixed(3)}
-        </td>
-        <td
-          contentEditable
-          suppressContentEditableWarning={true}
-          onBlur={e => modifyTheta(e, i)}
-          onKeyUp={e => enterToConfirm(e) ? modifyTheta(e, i) : null}
-        >
-          {target.theta.toFixed(2)}
-        </td>
-        <td style={{ width: "70px" }}>
-          <DeleteTargetButton
-            clickHandler={() => {
-              props.deleteButtonClickHandler(target.id);
-            }}
-          />
-          <DoubleArrowIcon />
-        </td>
-      </tr>
-    );
-  });
+        {target.label}
+      </td>
+      <td
+        contentEditable
+        suppressContentEditableWarning
+        onBlur={(e) => modifyX(e, target.id)}
+        onFocus={saveLabel}
+        onKeyUp={(e) => (enterToConfirm(e) ? modifyX(e, target.id) : null)}
+      >
+        {target.x.toFixed(3)}
+      </td>
+      <td
+        contentEditable
+        suppressContentEditableWarning
+        onBlur={(e) => modifyY(e, target.id)}
+        onKeyUp={(e) => (enterToConfirm(e) ? modifyY(e, target.id) : null)}
+      >
+        {target.y.toFixed(3)}
+      </td>
+      <td
+        contentEditable
+        suppressContentEditableWarning
+        onBlur={(e) => modifyTheta(e, i)}
+        onKeyUp={(e) => (enterToConfirm(e) ? modifyTheta(e, i) : null)}
+      >
+        {target.theta.toFixed(2)}
+      </td>
+      <td style={{ width: '70px' }}>
+        <DeleteTargetButton
+          clickHandler={() => {
+            props.deleteButtonClickHandler(target.id);
+          }}
+        />
+        <DoubleArrowIcon />
+      </td>
+    </tr>
+  ));
 
   return (
     <div className="dest-table">
@@ -135,7 +133,7 @@ export default (props) => {
             <th>X</th>
             <th>Y</th>
             <th>&thetasym;</th>
-            <th style={{ background: "transparent" }}>&nbsp;</th>
+            <th style={{ background: 'transparent' }}>&nbsp;</th>
           </tr>
         </thead>
         <tbody>{targetRows}</tbody>
