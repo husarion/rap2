@@ -1,7 +1,7 @@
 import React from 'react';
 
-export default () => (
+export default (props) => (
   <div className="">
-    <h3>Connected</h3>
+    {props.isConnected ? <h3>Connected</h3> : <h3>Disconnected!!!</h3>}
   </div>
 );

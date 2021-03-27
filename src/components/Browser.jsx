@@ -109,13 +109,16 @@ const Browser = forwardRef((props, ref) => {
           )}
         </Suspense>
 
-        <Targets
-          targets={props.targets}
-          unitTransform={transf}
-          modelSize={props.modelSize}
-          targetHoverOn={(id) => props.targetHoverOn(id)}
-          targetHoverOff={() => props.targetHoverOff()}
-        />
+        <Suspense fallback={null}>
+
+          <Targets
+            targets={props.targets}
+            unitTransform={transf}
+            modelSize={props.modelSize}
+            targetHoverOn={(id) => props.targetHoverOn(id)}
+            targetHoverOff={() => props.targetHoverOff()}
+          />
+        </Suspense>
 
         <Axis
           centerX={coordSystemCenterX}

@@ -57,7 +57,7 @@ export default (props) => {
     <div>
       <Logo />
       <Instructions />
-      <ConnectionIndicator />
+      <ConnectionIndicator isConnected={props.isConnected} />
       <ThemeProvider theme={husarionMaterialTheme}>
         <AddTargetButton clickHandler={props.addTargetHandler} />
         {/* <LoggingButton clickHandler={props.debugModeHandler} /> */}
@@ -66,6 +66,9 @@ export default (props) => {
       <DestTable
         targets={props.targets}
         activeTargetId={props.activeTargetId}
+        driveToTargetButtonClickHandler={(id) => {
+          props.driveToTargetHandler(id);
+        }}
         deleteButtonClickHandler={(id) => {
           const newTargets = deleteTargetById(id);
           props.updateTargetsHandler(newTargets);

@@ -1,26 +1,28 @@
 import React, {
-  useState, useRef, useEffect,
+  useState, useRef, useEffect, Suspense,
 } from 'react';
 import UI from './components/UI';
 import Browser from './components/Browser';
-import { useWebsocket } from './components/SocketManager';
+import { SocketManager, useWebsocket } from './components/SocketManager';
 import DebugArea from './components/DebugArea';
 import UnitTransform from './helpers/UnitTransform';
 import SidebarResizer from './components/SidebarResizer';
 import calculateNewSidebarWidth from './helpers/calculateNewSidebarWidth';
 import MobileButton from './components/buttons/MobileButton';
 
+// const man = new SocketManager();
+
 export default () => {
   const [targets, setTargets] = useState([]);
   const [activeTarget, setActiveTarget] = useState(null);
   const [nextId, setNextId] = useState(0);
   const [isPlacingTarget, setIsPlacingTarget] = useState(false);
-  const [debugText, setDebugText] = useState('nic');
-  const [sidebarWidth, setSidebarWidth] = useState(calculateNewSidebarWidth(325));
-  const isResizingSidebar = useRef(null);
+  const [sidebarWidth, setSidebarWidth] = useState(
+    calculateNewSidebarWidth(325),
+  );
 
   const socketData = useWebsocket();
-
+  const isResizingSidebar = useRef(null);
   const browserRef = useRef();
   const sidebarRef = useRef();
 
@@ -67,14 +69,24 @@ export default () => {
 
     const idForNewTarget = getNextId();
 
-    setTargets([...targets, {
-      targetPos: [xOnMap, 0, yOnMap],
+    setTargets([
+      ...targets,
+      {
+        targetPos: [xOnMap, 0, yOnMap],
+        x: realWorldX,
+        y: realWorldY,
+        theta,
+        id: idForNewTarget,
+        label: idForNewTarget, // user can name it anything they want later.
+      },
+    ]);
+
+    SocketManager.emitNewTarget({
       x: realWorldX,
       y: realWorldY,
       theta,
       id: idForNewTarget,
-      label: idForNewTarget, // user can name it anything they want later.
-    }]);
+    });
   };
 
   const updateTargets = (newTargets) => {
@@ -105,30 +117,36 @@ export default () => {
 
   return (
     <div>
-      <MobileButton />
-      <div className="sidebar" ref={sidebarRef} style={{ width: `${sidebarWidth.toString()}px` }}>
-        <UI
-          addTargetHandler={() => setIsPlacingTarget(!isPlacingTarget)}
-          debugModeHandler={() => {}}
-          resetCameraHandler={handleCameraReset}
-          targets={targets}
-          activeTargetId={activeTarget}
-          updateTargetsHandler={updateTargets}
+      <Suspense fallback={null}>
+        <MobileButton />
+        <div
+          className="sidebar"
+          ref={sidebarRef}
+          style={{ width: `${sidebarWidth.toString()}px` }}
+        >
+          <UI
+            addTargetHandler={() => setIsPlacingTarget(!isPlacingTarget)}
+            debugModeHandler={() => {}}
+            resetCameraHandler={handleCameraReset}
+            targets={socketData.wsTargets}
+            activeTargetId={activeTarget}
+            updateTargetsHandler={updateTargets}
+            driveToTargetHandler={(id) => SocketManager.emitDriveToTarget(id)}
+            isConnected={socketData.isConnected}
+          />
+          <SidebarResizer mouseDownHandler={startResizingSidebar} />
+        </div>
+        <Browser
+          ref={browserRef}
+          modelSize={1 / socketData.mapInfo.resolution}
+          targets={socketData.wsTargets}
+          addTargetHandler={addTarget}
+          targetHoverOn={targetHoverOn}
+          targetHoverOff={targetHoverOff}
+          isPlacingTarget={isPlacingTarget}
         />
-        <SidebarResizer
-          mouseDownHandler={startResizingSidebar}
-        />
-      </div>
-      <Browser
-        ref={browserRef}
-        modelSize={1 / socketData.mapInfo.resolution}
-        targets={targets}
-        addTargetHandler={addTarget}
-        targetHoverOn={targetHoverOn}
-        targetHoverOff={targetHoverOff}
-        isPlacingTarget={isPlacingTarget}
-      />
-      <DebugArea debugText={debugText} />
+        <DebugArea />
+      </Suspense>
     </div>
   );
 };

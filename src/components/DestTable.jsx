@@ -1,14 +1,10 @@
 import React, { useRef } from 'react';
 
-import DoubleArrowIcon from '@material-ui/icons/DoubleArrow';
 import DeleteTargetButton from './buttons/DeleteTargetButton';
+import DriveToTargetButton from './buttons/DriveToTargetButton';
 
 export default (props) => {
   // so targets should be in global state anyway... because they are ought to be held on backend...
-  // how do I do it... introduce renameTarget(oldId, newId)
-  // also enter.
-
-  // THIS SHOULD BE DONE DIFFERENTLY
 
   const previousLabel = useRef(null);
 
@@ -64,13 +60,6 @@ export default (props) => {
     return false;
   };
 
-  // ID must be unique.... but doesnt have to be a number...
-  // the most efficient hashmap is the js obj itsefl.
-
-  // kurde ta zmiana ID będzie problematyczna max.
-  // może po prostu hmm nazwać to pole inaczej - label
-  // i call it a day.
-
   // <td> should simply lose focus if value is confirmed.
 
   const targetRows = props.targets.map((target, i) => (
@@ -117,7 +106,11 @@ export default (props) => {
             props.deleteButtonClickHandler(target.id);
           }}
         />
-        <DoubleArrowIcon />
+        <DriveToTargetButton
+          clickHandler={() => {
+            props.driveToTargetButtonClickHandler(target.id);
+          }}
+        />
       </td>
     </tr>
   ));
