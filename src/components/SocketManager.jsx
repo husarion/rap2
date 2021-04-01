@@ -27,7 +27,7 @@ export const SocketContext = createContext({
 
 export const useWebsocket = () => useContext(SocketContext);
 
-const ws = io('http://192.168.100.23:3003/'); // for testing with no robot
+const ws = io('http://192.168.1.14:3003/'); // for testing with no robot
 // const ws = io();
 
 export class SocketManager extends React.Component {
@@ -71,6 +71,7 @@ export class SocketManager extends React.Component {
 
   static emitPing() {
     if (!ws) return;
+    console.log('pinging');
     ws.emit('keepalive', '');
   }
 
@@ -95,6 +96,8 @@ export class SocketManager extends React.Component {
 
   constructor(props) {
     super(props);
+
+    console.log('constructor SocketManager');
 
     // we are using web worker to draw robot occupancy grid from raw data because it's quite costly
     this.initWebWorker();
@@ -257,5 +260,3 @@ export class SocketManager extends React.Component {
     );
   }
 }
-
-// when in doubt, do it the dumb way first.

@@ -13,6 +13,7 @@ import RobotShadow from './RobotShadow';
 import Targets from './Targets';
 import UnitTransform from '../helpers/UnitTransform';
 import Axis from './Axis';
+import DirectionArrows from './DirectionArrows';
 
 import calculateNewTheta from '../helpers/calculateNewTheta';
 
@@ -126,6 +127,13 @@ const Browser = forwardRef((props, ref) => {
           oneMeterX={oneMeterX}
           oneMeterY={oneMeterY}
         />
+
+        <DirectionArrows
+          targets={props.targets}
+          unitTransform={transf}
+        />
+
+        <arrowHelper args={[['dupa', 0, 0], [0, 0, 0], 100, 0xff00ff, 0.6, 0.1]} />
 
         <OrthographicCamera
           makeDefault

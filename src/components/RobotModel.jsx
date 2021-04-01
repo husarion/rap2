@@ -4,7 +4,7 @@ import { useLoader } from 'react-three-fiber';
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader';
 
 import rosbotModel from '../assets/ROSBOT_realSize_fix1.gltf';
-import rosbotModelHover from '../assets/ROSBOT_realSize_hover.gltf';
+import rosbotModelHover from '../assets/ROSBOT_realSize_hover3.gltf';
 
 export default (props) => {
   const hoverModelObj = useLoader(GLTFLoader, rosbotModelHover);
@@ -31,7 +31,7 @@ export default (props) => {
     }
   };
 
-  const hoverGroup = (
+  const normalGroup = (
     <group
       ref={group}
       {...props}
@@ -40,18 +40,16 @@ export default (props) => {
       onPointerOver={handlePointerOver}
       onPointerOut={handlePointerOut}
     >
-      <mesh material={materials2['Color I08']} geometry={nodes2.mesh_0.geometry} />
-      <mesh material={materials2['0135_DarkGray']} geometry={nodes2.mesh_0_1.geometry} />
-      <mesh material={materials2['0136_Charcoal']} geometry={nodes2.mesh_0_2.geometry} />
-      <mesh material={materials2['Color I07']} geometry={nodes2.mesh_0_3.geometry} />
+      <mesh material={materials2['Color M07']} geometry={nodes2.mesh_0.geometry} />
+      <mesh material={materials2['0136_Charcoal']} geometry={nodes2.mesh_0_1.geometry} />
+      <mesh material={materials2['0135_DarkGray']} geometry={nodes2.mesh_0_2.geometry} />
+      <mesh material={materials2['Color M05']} geometry={nodes2.mesh_0_3.geometry} />
       <mesh material={materials2['0137_Black']} geometry={nodes2.mesh_0_4.geometry} />
-      <mesh material={materials2['0023_FireBrick']} geometry={nodes2.mesh_0_5.geometry} />
-      <mesh material={materials2['Color I06']} geometry={nodes2.mesh_0_6.geometry} />
-      <mesh material={materials2['Color I03']} geometry={nodes2.mesh_0_7.geometry} />
+      <mesh material={materials2['Color M09']} geometry={nodes2.mesh_0_5.geometry} />
     </group>
   );
 
-  const normalGroup = (
+  const hoverGroup = (
     <group
       ref={group}
       {...props}
@@ -70,6 +68,6 @@ export default (props) => {
   );
 
   return (
-    hover ? hoverGroup : normalGroup
+    hover || props.noDefaultHover ? hoverGroup : normalGroup
   );
 };

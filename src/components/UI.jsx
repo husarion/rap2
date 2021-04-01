@@ -28,19 +28,6 @@ const husarionMaterialTheme = createMuiTheme({
 });
 
 export default (props) => {
-  // it's mildly annoying that these modifiers are in this place,
-  // but i am gonna leave it for now.
-
-  const deleteTargetById = (id) => {
-    const updatedTargets = [];
-    props.targets.forEach((t) => {
-      if (t.id !== id) {
-        updatedTargets.push(t);
-      }
-    });
-
-    return updatedTargets;
-  };
 
   const modifyTargetById = (id, changes) => {
     const updatedTargets = [];
