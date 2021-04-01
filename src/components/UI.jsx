@@ -6,6 +6,7 @@ import Instructions from './Instructions';
 import Logo from './Logo';
 import AddTargetButton from './buttons/AddTargetButton';
 import ResetCameraButton from './buttons/ResetCameraButton';
+import StopButton from './buttons/StopButton';
 
 import ConnectionIndicator from './ConnectionIndicator';
 
@@ -62,6 +63,7 @@ export default (props) => {
         <AddTargetButton clickHandler={props.addTargetHandler} />
         {/* <LoggingButton clickHandler={props.debugModeHandler} /> */}
         <ResetCameraButton clickHandler={props.resetCameraHandler} />
+        <StopButton clickHandler={props.stopHandler} />
       </ThemeProvider>
       <DestTable
         targets={props.targets}

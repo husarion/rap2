@@ -7,6 +7,6 @@ export default (props) => (
     variant="contained"
     onClick={props.clickHandler}
   >
-    Reset camera
+    STOP
   </Button>
 );

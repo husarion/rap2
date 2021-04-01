@@ -6,10 +6,10 @@ export default (props) => {
 
   return (
     <DoubleArrowIcon
-      className={hovered ? 'active' : ''}
+      className={hovered || props.active ? 'active' : ''}
       onPointerOver={() => setHovered(true)}
       onPointerOut={() => setHovered(false)}
-      onClick={props.clickHandler}
+      onClick={() => { props.clickHandler(); }}
     />
   );
 };

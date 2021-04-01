@@ -9,7 +9,6 @@ import UnitTransform from './helpers/UnitTransform';
 import SidebarResizer from './components/SidebarResizer';
 import calculateNewSidebarWidth from './helpers/calculateNewSidebarWidth';
 import MobileButton from './components/buttons/MobileButton';
-import { Socket } from 'socket.io-client';
 
 // const man = new SocketManager();
 
@@ -50,7 +49,6 @@ export default () => {
     });
   }, []);
 
-  // could it be a coustom hook?
   const getNextId = () => {
     setNextId(nextId + 1);
     return nextId;
@@ -70,18 +68,6 @@ export default () => {
 
     const idForNewTarget = getNextId();
 
-    // setTargets([
-    //   ...targets,
-    //   {
-    //     targetPos: [xOnMap, 0, yOnMap],
-    //     x: realWorldX,
-    //     y: realWorldY,
-    //     theta,
-    //     id: idForNewTarget,
-    //     label: idForNewTarget, // user can name it anything they want later.
-    //   },
-    // ]);
-
     SocketManager.emitNewTargetRequest({
       x: realWorldX,
       y: realWorldY,
@@ -90,6 +76,7 @@ export default () => {
     });
   };
 
+  // this will also be changed...
   const updateTargets = (newTargets) => {
     setTargets(newTargets);
   };
@@ -134,6 +121,7 @@ export default () => {
             updateTargetsHandler={updateTargets}
             deleteTargetHandler={(id) => SocketManager.emitDeleteTargetRequest(id)}
             driveToTargetHandler={(id) => SocketManager.emitDriveToTarget(id)}
+            stopHandler={() => SocketManager.emitStopDrive()}
             isConnected={socketData.isConnected}
           />
           <SidebarResizer mouseDownHandler={startResizingSidebar} />

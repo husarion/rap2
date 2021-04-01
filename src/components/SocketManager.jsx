@@ -63,9 +63,15 @@ export class SocketManager extends React.Component {
     ws.emit('drive_to_target', targetID);
   }
 
+  static emitStopDrive() {
+    if (!ws) return;
+    console.log('emitting stop');
+    ws.emit('stop_drive');
+  }
+
   static emitPing() {
     if (!ws) return;
-    ws.emit('ping', '');
+    ws.emit('keepalive', '');
   }
 
   state = {
@@ -173,11 +179,8 @@ export class SocketManager extends React.Component {
       console.log('set_scale_range EVENT', data);
     });
 
-    ws.on('pong', () => {
-      this.setState({
-        isConnected: true,
-      });
-    });
+    // request for map.
+    ws.emit('get_occupancy_grid');
   }
 
   componentDidMount() {
@@ -220,10 +223,13 @@ export class SocketManager extends React.Component {
   }
 
   initKeepalive() {
-    SocketManager.emitPing();
     this.resetKeepaliveTimer();
 
-    ws.on('pong', () => {
+    setInterval(() => {
+      SocketManager.emitPing();
+    }, 1000);
+
+    ws.on('iamhere', () => {
       this.setState({
         isConnected: true,
       });

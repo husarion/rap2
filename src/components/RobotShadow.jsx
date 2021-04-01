@@ -1,13 +1,13 @@
 import React, { useRef } from 'react';
 import { useLoader } from 'react-three-fiber';
-import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader";
+import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader';
 
 import rosbotModel from '../assets/ROSBOT_real.gltf';
 import RotationPickerArrow from './RotationPickerArrow';
 
 export default (props) => {
-  const { nodes } = useLoader(GLTFLoader, rosbotModel)
-  const group = useRef()
+  const { nodes } = useLoader(GLTFLoader, rosbotModel);
+  const group = useRef();
 
   return (
     <group ref={group} {...props} dispose={null} scale={[props.scale, props.scale, props.scale]}>
@@ -32,5 +32,5 @@ export default (props) => {
       </mesh>
 
     </group>
-  )
-}
+  );
+};
