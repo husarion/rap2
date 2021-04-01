@@ -9,6 +9,7 @@ import UnitTransform from './helpers/UnitTransform';
 import SidebarResizer from './components/SidebarResizer';
 import calculateNewSidebarWidth from './helpers/calculateNewSidebarWidth';
 import MobileButton from './components/buttons/MobileButton';
+import { Socket } from 'socket.io-client';
 
 // const man = new SocketManager();
 
@@ -69,23 +70,23 @@ export default () => {
 
     const idForNewTarget = getNextId();
 
-    setTargets([
-      ...targets,
-      {
-        targetPos: [xOnMap, 0, yOnMap],
-        x: realWorldX,
-        y: realWorldY,
-        theta,
-        id: idForNewTarget,
-        label: idForNewTarget, // user can name it anything they want later.
-      },
-    ]);
+    // setTargets([
+    //   ...targets,
+    //   {
+    //     targetPos: [xOnMap, 0, yOnMap],
+    //     x: realWorldX,
+    //     y: realWorldY,
+    //     theta,
+    //     id: idForNewTarget,
+    //     label: idForNewTarget, // user can name it anything they want later.
+    //   },
+    // ]);
 
-    SocketManager.emitNewTarget({
+    SocketManager.emitNewTargetRequest({
       x: realWorldX,
       y: realWorldY,
       theta,
-      id: idForNewTarget,
+      label: idForNewTarget,
     });
   };
 
@@ -131,6 +132,7 @@ export default () => {
             targets={socketData.wsTargets}
             activeTargetId={activeTarget}
             updateTargetsHandler={updateTargets}
+            deleteTargetHandler={(id) => SocketManager.emitDeleteTargetRequest(id)}
             driveToTargetHandler={(id) => SocketManager.emitDriveToTarget(id)}
             isConnected={socketData.isConnected}
           />

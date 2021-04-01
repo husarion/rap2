@@ -16,7 +16,6 @@ function createFakeCanvas() {
   return canvas;
 }
 
-
 export const SocketContext = createContext({
   mapCanvas: {},
   robotPos: {},
@@ -28,8 +27,8 @@ export const SocketContext = createContext({
 
 export const useWebsocket = () => useContext(SocketContext);
 
-// const ws = io('http://192.168.1.14:3003/'); // for testing with no robot
-const ws = io();
+const ws = io('http://192.168.100.23:3003/'); // for testing with no robot
+// const ws = io();
 
 export class SocketManager extends React.Component {
   /**
@@ -40,10 +39,19 @@ export class SocketManager extends React.Component {
    * @property {number} theta
    * @param {TargetPoint} targetObj
    */
-  static emitNewTarget(targetObj) {
+  static emitNewTargetRequest(targetObj) {
     if (!ws) return;
     console.log('emitting new_target', targetObj);
     ws.emit('new_target', targetObj);
+  }
+
+  /**
+   * @param {number} targetID
+   */
+  static emitDeleteTargetRequest(targetID) {
+    if (!ws) return;
+    console.log('emitting delete_target', targetID);
+    ws.emit('delete_target', targetID);
   }
 
   /**
@@ -74,8 +82,6 @@ export class SocketManager extends React.Component {
     },
     isConnected: false,
   };
-
-  socket = null;
 
   worker = null;
 
@@ -122,17 +128,29 @@ export class SocketManager extends React.Component {
 
     ws.on('add_target', (data) => {
       console.log('add_target EVENT', data);
-      // so the format that is used
-
-      // yeah let's just add target simply.
 
       this.setState((prevState) => ({
         wsTargets: [...prevState.wsTargets, data], // id, x, y, theta, label
       }));
     });
 
-    ws.on('remove_target_by_id', (data) => {
-      console.log('remove_target_by_id EVENT', data);
+    ws.on('remove_target_by_id', (targetIdToRemove) => {
+      console.log('remove_target_by_id EVENT', targetIdToRemove);
+
+      // here we are removing the target...
+      // should work...
+      this.setState((prevState) => {
+        const updatedTargets = [];
+        prevState.wsTargets.forEach((t) => {
+          if (t.id !== targetIdToRemove) {
+            updatedTargets.push(t);
+          }
+        });
+
+        return {
+          wsTargets: updatedTargets,
+        };
+      });
     });
 
     ws.on('new_route_point', (data) => {
@@ -160,6 +178,14 @@ export class SocketManager extends React.Component {
         isConnected: true,
       });
     });
+  }
+
+  componentDidMount() {
+
+  }
+
+  componentWillUnmount() {
+    ws.close();
   }
 
   handleRawMapDataWebWorker(mapdata) {
@@ -194,7 +220,7 @@ export class SocketManager extends React.Component {
   }
 
   initKeepalive() {
-    this.emitPing();
+    SocketManager.emitPing();
     this.resetKeepaliveTimer();
 
     ws.on('pong', () => {

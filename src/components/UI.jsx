@@ -70,8 +70,7 @@ export default (props) => {
           props.driveToTargetHandler(id);
         }}
         deleteButtonClickHandler={(id) => {
-          const newTargets = deleteTargetById(id);
-          props.updateTargetsHandler(newTargets);
+          props.deleteTargetHandler(id);
         }}
         modifyTargetHandler={(id, changes) => {
           const newTargets = modifyTargetById(id, changes);
