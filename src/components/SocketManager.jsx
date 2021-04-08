@@ -27,8 +27,8 @@ export const SocketContext = createContext({
 
 export const useWebsocket = () => useContext(SocketContext);
 
-const ws = io('http://192.168.1.14:3003/'); // for testing with no robot
-// const ws = io();
+// const ws = io('http://192.168.1.14:3003/'); // for testing with no robot
+const ws = io();
 
 export class SocketManager extends React.Component {
   /**

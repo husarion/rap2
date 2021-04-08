@@ -32,6 +32,9 @@ const storage = multer.diskStorage({
   },
 });
 
+// @ympek
+let lastOccupancyGrid = null;
+
 const upload = multer({ storage });
 
 let zoom_publisher;
@@ -106,6 +109,9 @@ console.log('Autosave interval time: ', argv.port, '[ms]');
 autosave_interval_time = argv.map_autosave_interval;
 
 function save_config() {
+
+  // make save_config as noop for the time being.
+
   const confObject = {
     mapMode: selected_map_mode,
     customMapFile: custom_map_file,
@@ -122,6 +128,8 @@ function save_config() {
 }
 
 function load_config() {
+  console.log("lOADING CONFIG SZYMEK/");
+
   if (fs.existsSync(configFileName)) {
     fs.readFile(configFileName, 'utf8', (err, data) => {
       if (err) {
@@ -455,6 +463,11 @@ io.on('connection', (socket) => {
     console.log('user disconnected');
   });
 
+  socket.on('get_occupancy_grid', () => {
+    console.log('emitting raw map', typeof lastOccupancyGrid);
+    io.emit('raw_map_data', lastOccupancyGrid);
+  });
+
   socket.on('map_scale', (map_scale) => {
     zoom_msg.data = map_scale;
     zoom_publisher.publish(zoom_msg);
@@ -638,6 +651,8 @@ rosnodejs.initNode('/rosnodejs')
       // @ympek
       // let's get raw OccupancyGrid from rosbot to explore
       // manipulation options on browser side.
+      // there is new map - better save it for later...
+      lastOccupancyGrid = data; 
       io.emit('raw_map_data', data);
     });
 

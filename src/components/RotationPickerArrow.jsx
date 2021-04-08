@@ -11,9 +11,3 @@ export default (props) => {
     <arrowHelper args={[undefined, undefined, arrowLength, 0xff00ff, 0.6, 0.1]} />
   );
 };
-
-// so I can build rotation arrow not like this, embodied inside, but also outside,
-// so it does not interfere with my hovers.
-
-// i just need the coordinates...
-// maybe I can useFrame() here and do it imperatively....
