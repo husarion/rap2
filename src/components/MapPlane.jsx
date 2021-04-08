@@ -23,6 +23,7 @@ export default (props) => {
           attach="map"
           image={props.mapCanvas}
           onUpdate={onu}
+          flipY={false}
         />
       </meshBasicMaterial>
     </mesh>

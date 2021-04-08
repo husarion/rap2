@@ -103,7 +103,7 @@ export default () => {
     document.body.style.cursor = 'col-resize';
   };
 
-  console.log('rerender app');
+  // console.log('rerender app');
 
   return (
     <div>

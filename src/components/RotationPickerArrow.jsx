@@ -1,4 +1,5 @@
 import React from 'react';
+import { Vector3 } from 'three';
 
 export default (props) => {
   const x2 = (props.end[0] - props.begin[0]) ** 2;
@@ -8,6 +9,6 @@ export default (props) => {
   if (arrowLength < 1) arrowLength = 1;
 
   return (
-    <arrowHelper args={[undefined, undefined, arrowLength, 0xff00ff, 0.6, 0.1]} />
+    <arrowHelper args={[new Vector3(1, 0, 0).normalize(), undefined, arrowLength, 0xff00ff, 0.3, 0.1]} />
   );
 };

@@ -20,7 +20,8 @@ export const SocketContext = createContext({
   mapCanvas: {},
   robotPos: {},
   mapInfo: {},
-  debugData: '',
+  debugRobotPos: '',
+  debugMapData: '',
   wsTargets: [],
   isConnected: false,
 });
@@ -71,12 +72,13 @@ export class SocketManager extends React.Component {
 
   static emitPing() {
     if (!ws) return;
-    console.log('pinging');
+    // console.log('pinging');
     ws.emit('keepalive', '');
   }
 
   state = {
-    debugData: '',
+    debugRobotPos: '',
+    debugMapData: '',
     wsTargets: [], // change it to simply "targets" later
     mapCanvas: createFakeCanvas(),
     robotPos: { x: 0, y: 0, theta: 0 },
@@ -121,7 +123,7 @@ export class SocketManager extends React.Component {
 
         return {
           robotPos: { x, y, theta: data.theta },
-          debugData: `x: ${data.x_pos} y: ${data.y_pos}t: ${data.theta}`,
+          debugRobotPos: `x: ${data.x_pos} y: ${data.y_pos}t: ${data.theta}`,
         };
       });
     });
@@ -200,7 +202,7 @@ export class SocketManager extends React.Component {
     canvas.width = mapdata.info.width;
     canvas.height = mapdata.info.height;
 
-    console.log('Posting to worker.');
+    console.log('Posting to worker.', mapdata.info);
     this.worker.postMessage({ mapdata });
 
     this.setState({
@@ -211,6 +213,7 @@ export class SocketManager extends React.Component {
           x: mapdata.info.origin.position.x,
           y: mapdata.info.origin.position.y,
         },
+        debugMapData: `origX: ${mapdata.info.origin.position.x} origY: ${mapdata.info.origin.position.y}`,
       },
     });
   }

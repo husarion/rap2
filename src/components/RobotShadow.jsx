@@ -2,7 +2,7 @@ import React, { useRef } from 'react';
 import { useLoader } from 'react-three-fiber';
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader';
 
-import rosbotModel from '../assets/ROSBOT_real.gltf';
+import rosbotModel from '../assets/ROSBOT_realSize_fix3.gltf';
 import RotationPickerArrow from './RotationPickerArrow';
 
 export default (props) => {
@@ -30,7 +30,6 @@ export default (props) => {
       <mesh geometry={nodes.mesh_0_4.geometry}>
         <meshBasicMaterial color={0x00ff00} />
       </mesh>
-
     </group>
   );
 };

@@ -6,7 +6,9 @@ export default () => {
 
   return (
     <div className="debugs">
-      {socketData.debugData}
+      {socketData.debugRobotPos}
+      /
+      {socketData.debugMapData}
     </div>
   );
 };
