@@ -14,6 +14,7 @@ import Targets from './Targets';
 import UnitTransform from '../helpers/UnitTransform';
 import Axis from './Axis';
 import DirectionArrows from './DirectionArrows';
+import RotationPickerArrow from './RotationPickerArrow';
 
 import calculateNewTheta from '../helpers/calculateNewTheta';
 
@@ -48,13 +49,11 @@ const Browser = forwardRef((props, ref) => {
   const [ghostVisible, setGhostVisible] = useState(false);
   const [ghostPos, setGhostPos] = useState([]);
   const [ghostRotation, setGhostRotation] = useState([0, 0, 0]);
-  const [rotationPickerArrowPos, setRotationPickerArrowPos] = useState([]);
 
   const handlePointerMove = (e) => {
     if (e.shiftKey || props.isPlacingTarget) {
       if (isChoosingRotation) {
         const newTheta = calculateNewTheta(ghostPos[X], ghostPos[Z], e.point.x, e.point.z);
-        setRotationPickerArrowPos([e.point.x, 0, e.point.z]);
         setGhostRotation([0, newTheta, 0]);
       } else {
         setGhostPos([e.point.x, 0, e.point.z]);
@@ -70,10 +69,6 @@ const Browser = forwardRef((props, ref) => {
       setIsChoosingRotation(true);
       // for mobile devices:
       setGhostVisible(true);
-      // we are setting it here to avoid visual glitch,
-      // when arrow tip is visible in last 'ghost' position for a brief moment
-      // when starting to pick new target.
-      setRotationPickerArrowPos([e.point.x, 0, e.point.z]);
     }
   };
 
@@ -104,11 +99,17 @@ const Browser = forwardRef((props, ref) => {
               scale={props.modelSize}
               position={ghostPos}
               rotation={ghostRotation}
-              arrowVisible={isChoosingRotation}
-              arrowPos={rotationPickerArrowPos}
             />
           )}
         </Suspense>
+
+        {isChoosingRotation && (
+          <RotationPickerArrow
+            targetX={ghostPos[X]}
+            targetY={ghostPos[Z]}
+            theta={ghostRotation[Y]}
+          />
+        )}
 
         <Suspense fallback={null}>
 
