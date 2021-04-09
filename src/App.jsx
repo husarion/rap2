@@ -10,8 +10,6 @@ import SidebarResizer from './components/SidebarResizer';
 import calculateNewSidebarWidth from './helpers/calculateNewSidebarWidth';
 import MobileButton from './components/buttons/MobileButton';
 
-// const man = new SocketManager();
-
 export default () => {
   const [targets, setTargets] = useState([]);
   const [activeTarget, setActiveTarget] = useState(null);

@@ -1,0 +1,99 @@
+diff --git a/src/App.jsx b/src/App.jsx
+index cae8903..3b9eae4 100644
+--- a/src/App.jsx
++++ b/src/App.jsx
+@@ -81,7 +81,7 @@ export default () => {
+       },
+     ]);
+ 
+-    SocketManager.emitNewTarget({
++    SocketManager.emitNewTargetRequest({
+       x: realWorldX,
+       y: realWorldY,
+       theta,
+diff --git a/src/components/SocketManager.jsx b/src/components/SocketManager.jsx
+index 8557da6..68e68fa 100644
+--- a/src/components/SocketManager.jsx
++++ b/src/components/SocketManager.jsx
+@@ -39,12 +39,21 @@ export class SocketManager extends React.Component {
+    * @property {number} theta
+    * @param {TargetPoint} targetObj
+    */
+-  static emitNewTarget(targetObj) {
++  static emitNewTargetRequest(targetObj) {
+     if (!ws) return;
+     console.log('emitting new_target', targetObj);
+     ws.emit('new_target', targetObj);
+   }
+ 
++  /**
++   * @param {number} targetID
++   */
++  static emitDeleteTargetRequest(targetID) {
++    if (!ws) return;
++    console.log('emitting delete_target', targetID);
++    ws.emit('delete_target', targetID);
++  }
++
+   /**
+    * @param {number} targetID
+    */
+@@ -74,8 +83,6 @@ export class SocketManager extends React.Component {
+     isConnected: false,
+   };
+ 
+-  socket = null;
+-
+   worker = null;
+ 
+   keepaliveTimer = null;
+@@ -121,17 +128,29 @@ export class SocketManager extends React.Component {
+ 
+     ws.on('add_target', (data) => {
+       console.log('add_target EVENT', data);
+-      // so the format that is used
+-
+-      // yeah let's just add target simply.
+ 
+       this.setState((prevState) => ({
+         wsTargets: [...prevState.wsTargets, data], // id, x, y, theta, label
+       }));
+     });
+ 
+-    ws.on('remove_target_by_id', (data) => {
+-      console.log('remove_target_by_id EVENT', data);
++    ws.on('remove_target_by_id', (targetIdToRemove) => {
++      console.log('remove_target_by_id EVENT', targetIdToRemove);
++
++      // here we are removing the target...
++      // should work...
++      this.setState((prevState) => {
++        const updatedTargets = [];
++        prevState.wsTargets.forEach((t) => {
++          if (t.id !== targetIdToRemove) {
++            updatedTargets.push(t);
++          }
++        });
++
++        return {
++          wsTargets: updatedTargets,
++        };
++      });
+     });
+ 
+     ws.on('new_route_point', (data) => {
+@@ -155,6 +174,14 @@ export class SocketManager extends React.Component {
+     });
+   }
+ 
++  componentDidMount() {
++
++  }
++
++  componentWillUnmount() {
++    ws.close();
++  }
++
+   handleRawMapDataWebWorker(mapdata) {
+     const canvas = document.createElement('canvas');
+ 
