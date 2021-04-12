@@ -119,12 +119,19 @@ function save_config() {
     targetList: targets,
   };
   const jsonString = JSON.stringify(confObject);
-  fs.writeFile(configFileName, jsonString, 'utf8', (err) => {
+  fs.writeFileSync(configFileName, jsonString, 'utf8', (err) => {
     if (err) {
       console.log(err);
     }
   });
   load_config();
+}
+
+function start_slam_process() {
+  stopAMCL();
+  stopMapServer();
+  console.log('Start SLAM process');
+  startGmapping();
 }
 
 function load_config() {
@@ -466,6 +473,10 @@ io.on('connection', (socket) => {
   socket.on('get_occupancy_grid', () => {
     console.log('emitting raw map', typeof lastOccupancyGrid);
     io.emit('raw_map_data', lastOccupancyGrid);
+  });
+
+  socket.on('start_slam_process', () => {
+    start_slam_process();
   });
 
   socket.on('map_scale', (map_scale) => {

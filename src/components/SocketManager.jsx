@@ -76,6 +76,11 @@ export class SocketManager extends React.Component {
     ws.emit('keepalive', '');
   }
 
+  static emitRestartSLAMProcess() {
+    if (!ws) return;
+    ws.emit('start_slam_process', '');
+  }
+
   state = {
     debugRobotPos: '',
     debugMapData: '',

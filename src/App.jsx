@@ -121,6 +121,7 @@ export default () => {
             updateTargetsHandler={updateTargets}
             deleteTargetHandler={(id) => SocketManager.emitDeleteTargetRequest(id)}
             driveToTargetHandler={(id) => SocketManager.emitDriveToTarget(id)}
+            restartSLAMHandler={() => SocketManager.emitRestartSLAMProcess()}
             stopHandler={() => SocketManager.emitStopDrive()}
             isConnected={socketData.isConnected}
           />

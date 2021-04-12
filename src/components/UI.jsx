@@ -9,6 +9,7 @@ import ResetCameraButton from './buttons/ResetCameraButton';
 import StopButton from './buttons/StopButton';
 
 import ConnectionIndicator from './ConnectionIndicator';
+import RestartSLAMButton from './buttons/RestartSLAMButton';
 
 const husarionMaterialTheme = createMuiTheme({
   palette: {
@@ -28,7 +29,6 @@ const husarionMaterialTheme = createMuiTheme({
 });
 
 export default (props) => {
-
   const modifyTargetById = (id, changes) => {
     const updatedTargets = [];
     props.targets.forEach((t) => {
@@ -51,6 +51,7 @@ export default (props) => {
         {/* <LoggingButton clickHandler={props.debugModeHandler} /> */}
         <ResetCameraButton clickHandler={props.resetCameraHandler} />
         <StopButton clickHandler={props.stopHandler} />
+        <RestartSLAMButton clickHandler={props.restartSLAMHandler} />
       </ThemeProvider>
       <DestTable
         targets={props.targets}
