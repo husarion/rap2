@@ -411,8 +411,9 @@ function emit_target(target) {
   io.emit('add_target', target);
 }
 
-function emit_target_delete(target_id) {
-  io.emit('remove_target_by_id', target_id);
+function emit_targets_update() {
+  console.log('emit targets update');
+  io.emit('targets_update', targets.get_targets());
 }
 
 function emit_route_point(sequence, navID, routeID) {
@@ -471,7 +472,7 @@ io.on('connection', (socket) => {
   });
 
   socket.on('get_occupancy_grid', () => {
-    console.log('emitting raw map', typeof lastOccupancyGrid);
+    console.log('emitting raw map',lastOccupancyGrid.info, typeof lastOccupancyGrid);
     io.emit('raw_map_data', lastOccupancyGrid);
   });
 
@@ -492,7 +493,7 @@ io.on('connection', (socket) => {
 
   socket.on('delete_target', (target_id) => {
     targets.remove_target(target_id);
-    emit_target_delete(target_id);
+    emit_targets_update();
     save_config();
   });
 
@@ -500,8 +501,15 @@ io.on('connection', (socket) => {
     console.log('New target\n', new_target);
     const target = new NavTargets.Target(targets.get_next_id(), new_target.x, new_target.y, new_target.theta, new_target.label);
     targets.add_target(target);
-    emit_target(target);
+    emit_targets_update();
     save_config();
+  });
+
+  socket.on('update_target', (changesObj) => {
+    const targetID = changesObj.id;
+    console.log('update TARGET', targetID, changesObj);
+    targets.update_target_by_id(changesObj);
+    emit_targets_update();
   });
 
   socket.on('drive_to_target', (targetID) => {

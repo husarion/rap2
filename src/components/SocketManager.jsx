@@ -28,8 +28,8 @@ export const SocketContext = createContext({
 
 export const useWebsocket = () => useContext(SocketContext);
 
-const ws = io('http://192.168.1.14:3003/'); // for testing with no robot
-// const ws = io();
+// const ws = io('http://192.168.1.14:3003/'); // for testing with no robot
+const ws = io();
 
 export class SocketManager extends React.Component {
   /**
@@ -53,6 +53,12 @@ export class SocketManager extends React.Component {
     if (!ws) return;
     console.log('emitting delete_target', targetID);
     ws.emit('delete_target', targetID);
+  }
+
+  static emitModifyTargetRequest(targetID, changes) {
+    if (!ws) return;
+    console.log('emitting update_target', targetID, changes);
+    ws.emit('update_target', { id: targetID, ...changes });
   }
 
   /**
@@ -142,30 +148,10 @@ export class SocketManager extends React.Component {
       console.log('map_file_list EVENT', data);
     });
 
-    ws.on('add_target', (data) => {
-      console.log('add_target EVENT', data);
-
-      this.setState((prevState) => ({
-        wsTargets: [...prevState.wsTargets, data], // id, x, y, theta, label
-      }));
-    });
-
-    ws.on('remove_target_by_id', (targetIdToRemove) => {
-      console.log('remove_target_by_id EVENT', targetIdToRemove);
-
-      // here we are removing the target...
-      // should work...
-      this.setState((prevState) => {
-        const updatedTargets = [];
-        prevState.wsTargets.forEach((t) => {
-          if (t.id !== targetIdToRemove) {
-            updatedTargets.push(t);
-          }
-        });
-
-        return {
-          wsTargets: updatedTargets,
-        };
+    // hmm should work.
+    ws.on('targets_update', (targets) => {
+      this.setState({
+        wsTargets: targets, // id, x, y, theta, label
       });
     });
 
@@ -203,6 +189,11 @@ export class SocketManager extends React.Component {
 
   handleRawMapDataWebWorker(mapdata) {
     const canvas = document.createElement('canvas');
+
+    if (!mapdata) {
+      console.log('map not ready. inform user somehow.');
+      return;
+    }
 
     canvas.width = mapdata.info.width;
     canvas.height = mapdata.info.height;

@@ -32,7 +32,7 @@ export default (props) => {
       <mesh material={materials['Color M07']} geometry={nodes.mesh_0.geometry} />
       <mesh material={materials['0136_Charcoal']} geometry={nodes.mesh_0_1.geometry} />
       <mesh material={materials['0135_DarkGray']} geometry={nodes.mesh_0_2.geometry} />
-      {hover || props.noDefaultHover
+      {hover || props.noDefaultHover || props.hovered
         ? <mesh geometry={nodes.mesh_0_3.geometry}><meshBasicMaterial color={0xba0606} /></mesh>
         : <mesh material={materials['Color M05']} geometry={nodes.mesh_0_3.geometry} />}
       <mesh material={materials['0137_Black']} geometry={nodes.mesh_0_4.geometry} />

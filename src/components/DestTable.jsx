@@ -54,6 +54,7 @@ export default (props) => {
   const enterToConfirm = (e) => {
     if (e.key === 'Enter') {
       e.preventDefault();
+      console.log('default prevented!');
       window.focus(); // why it does not work?
       return true;
     }
@@ -62,8 +63,10 @@ export default (props) => {
 
   // <td> should simply lose focus if value is confirmed.
 
-  const targetRows = props.targets.map((target, i) => (
+  const targetRows = props.targets.map((target) => (
     <tr
+      onMouseOver={() => props.rowMouseOverHandler(target.id)}
+      onMouseOut={() => props.rowMouseOutHandler()}
       className={props.activeTargetId === target.id ? 'active' : ''}
       key={target.id}
     >
@@ -95,8 +98,8 @@ export default (props) => {
       <td
         contentEditable
         suppressContentEditableWarning
-        onBlur={(e) => modifyTheta(e, i)}
-        onKeyUp={(e) => (enterToConfirm(e) ? modifyTheta(e, i) : null)}
+        onBlur={(e) => modifyTheta(e, target.id)}
+        onKeyUp={(e) => (enterToConfirm(e) ? modifyTheta(e, target.id) : null)}
       >
         {target.theta.toFixed(2)}
       </td>

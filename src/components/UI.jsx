@@ -28,45 +28,32 @@ const husarionMaterialTheme = createMuiTheme({
   },
 });
 
-export default (props) => {
-  const modifyTargetById = (id, changes) => {
-    const updatedTargets = [];
-    props.targets.forEach((t) => {
-      if (t.id === id) {
-        Object.assign(t, changes);
-      }
-      updatedTargets.push(t);
-    });
-
-    return updatedTargets;
-  };
-
-  return (
-    <div>
-      <Logo />
-      <Instructions />
-      <ConnectionIndicator isConnected={props.isConnected} />
-      <ThemeProvider theme={husarionMaterialTheme}>
-        <AddTargetButton clickHandler={props.addTargetHandler} />
-        {/* <LoggingButton clickHandler={props.debugModeHandler} /> */}
-        <ResetCameraButton clickHandler={props.resetCameraHandler} />
-        <StopButton clickHandler={props.stopHandler} />
-        <RestartSLAMButton clickHandler={props.restartSLAMHandler} />
-      </ThemeProvider>
-      <DestTable
-        targets={props.targets}
-        activeTargetId={props.activeTargetId}
-        driveToTargetButtonClickHandler={(id) => {
-          props.driveToTargetHandler(id);
-        }}
-        deleteButtonClickHandler={(id) => {
-          props.deleteTargetHandler(id);
-        }}
-        modifyTargetHandler={(id, changes) => {
-          const newTargets = modifyTargetById(id, changes);
-          props.updateTargetsHandler(newTargets);
-        }}
-      />
-    </div>
-  );
-};
+export default (props) => (
+  <div>
+    <Logo />
+    <Instructions />
+    <ConnectionIndicator isConnected={props.isConnected} />
+    <ThemeProvider theme={husarionMaterialTheme}>
+      <AddTargetButton clickHandler={props.addTargetHandler} />
+      {/* <LoggingButton clickHandler={props.debugModeHandler} /> */}
+      <ResetCameraButton clickHandler={props.resetCameraHandler} />
+      <StopButton clickHandler={props.stopHandler} />
+      <RestartSLAMButton clickHandler={props.restartSLAMHandler} />
+    </ThemeProvider>
+    <DestTable
+      targets={props.targets}
+      activeTargetId={props.activeTargetId}
+      driveToTargetButtonClickHandler={(id) => {
+        props.driveToTargetHandler(id);
+      }}
+      deleteButtonClickHandler={(id) => {
+        props.deleteTargetHandler(id);
+      }}
+      modifyTargetHandler={(id, changes) => {
+        props.modifyTargetHandler(id, changes);
+      }}
+      rowMouseOverHandler={props.highlightTarget}
+      rowMouseOutHandler={props.clearHighlightTarget}
+    />
+  </div>
+);

@@ -11,12 +11,11 @@ import calculateNewSidebarWidth from './helpers/calculateNewSidebarWidth';
 import MobileButton from './components/buttons/MobileButton';
 
 export default () => {
-  const [targets, setTargets] = useState([]);
   const [activeTarget, setActiveTarget] = useState(null);
   const [nextId, setNextId] = useState(0);
   const [isPlacingTarget, setIsPlacingTarget] = useState(false);
   const [sidebarWidth, setSidebarWidth] = useState(
-    calculateNewSidebarWidth(325),
+    calculateNewSidebarWidth(355),
   );
 
   const socketData = useWebsocket();
@@ -74,11 +73,6 @@ export default () => {
     });
   };
 
-  // this will also be changed...
-  const updateTargets = (newTargets) => {
-    setTargets(newTargets);
-  };
-
   const targetHoverOn = (targetId) => {
     setActiveTarget(targetId);
     // is calling document an anti pattern here?
@@ -101,8 +95,6 @@ export default () => {
     document.body.style.cursor = 'col-resize';
   };
 
-  // console.log('rerender app');
-
   return (
     <div>
       <Suspense fallback={null}>
@@ -118,11 +110,13 @@ export default () => {
             resetCameraHandler={handleCameraReset}
             targets={socketData.wsTargets}
             activeTargetId={activeTarget}
-            updateTargetsHandler={updateTargets}
             deleteTargetHandler={(id) => SocketManager.emitDeleteTargetRequest(id)}
+            modifyTargetHandler={(id, changes) => SocketManager.emitModifyTargetRequest(id, changes)}
             driveToTargetHandler={(id) => SocketManager.emitDriveToTarget(id)}
             restartSLAMHandler={() => SocketManager.emitRestartSLAMProcess()}
             stopHandler={() => SocketManager.emitStopDrive()}
+            highlightTarget={targetHoverOn}
+            clearHighlightTarget={targetHoverOff}
             isConnected={socketData.isConnected}
           />
           <SidebarResizer mouseDownHandler={startResizingSidebar} />
@@ -135,6 +129,7 @@ export default () => {
           targetHoverOn={targetHoverOn}
           targetHoverOff={targetHoverOff}
           isPlacingTarget={isPlacingTarget}
+          activeTarget={activeTarget}
         />
         <DebugArea />
       </Suspense>

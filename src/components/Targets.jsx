@@ -9,6 +9,7 @@ export default (props) => props.targets.map((target) => {
       scale={props.modelSize}
       position={[targetX, 0, targetY]}
       rotation={[0, target.theta, 0]}
+      hovered={(target.id === props.activeTargetId)}
       hoverOn={() => {
         props.targetHoverOn(target.id);
       }}
