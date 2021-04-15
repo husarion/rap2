@@ -54,6 +54,7 @@ let map_server_process;
 let amcl_process;
 let global_localization_process;
 let gmapping_process;
+let slam_toolbox_process;
 let autosave_interval;
 let autosave_interval_time;
 let custom_map_file;
@@ -131,7 +132,17 @@ function start_slam_process() {
   stopAMCL();
   stopMapServer();
   console.log('Start SLAM process');
-  startGmapping();
+  // startGmapping();
+  startSlamToolbox();
+}
+
+function stop_slam_process() {
+  // stopGmapping();
+  stopSlamToolbox();
+  stopAutoSave();
+  custom_map_file = confObject.customMapFile;
+  startMapServer(custom_map_file);
+  startAMCL();
 }
 
 function load_config() {
@@ -145,10 +156,7 @@ function load_config() {
         const confObject = JSON.parse(data);
         targets.targets = confObject.targetList.targets;
         if (confObject.mapMode == 'SLAM') {
-          stopAMCL();
-          stopMapServer();
-          console.log('Start SLAM process');
-          startGmapping();
+          start_slam_process();
           if (confObject.autosaveEnable == true) {
             console.log('Start map autosave process');
             startAutoSave();
@@ -156,11 +164,7 @@ function load_config() {
             stopAutoSave();
           }
         } else if (confObject.mapMode == 'STATIC') {
-          stopGmapping();
-          stopAutoSave();
-          custom_map_file = confObject.customMapFile;
-          startMapServer(custom_map_file);
-          startAMCL();
+          stop_slam_process();
         }
       }
     });
@@ -311,6 +315,34 @@ function startGmapping() {
       gmapping_process = null;
     });
     console.log('Gmapping launched');
+  }
+}
+
+function stopSlamToolbox() {
+  if (slam_toolbox_process) {
+      exec('rosnode kill slam_toolbox_node', (err, stdout, stderr) => {
+          if (err) {
+              console.log("Could not stop slam_toolbox: " + err);
+          }
+      });
+      slam_toolbox_process.kill();
+      slam_toolbox_process = null;
+  }
+}
+
+function startSlamToolbox() {
+  if (slam_toolbox_process) {
+      console.log("Slam_toolbox is already running, no need to launch it again")
+  } else {
+      slam_toolbox_process = exec('roslaunch route_admin_panel slam_toolbox.launch', (err, stdout, stderr) => {
+          console.log("Slam_toolbox finished");
+          if (err) {
+              console.log("Error: " + err);
+              return;
+          }
+          slam_toolbox_process = null;
+      });
+      console.log("Slam_toolbox launched");
   }
 }
 
@@ -472,7 +504,7 @@ io.on('connection', (socket) => {
   });
 
   socket.on('get_occupancy_grid', () => {
-    console.log('emitting raw map',lastOccupancyGrid.info, typeof lastOccupancyGrid);
+    console.log('emitting raw map', typeof lastOccupancyGrid);
     io.emit('raw_map_data', lastOccupancyGrid);
   });
 
