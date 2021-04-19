@@ -1,5 +1,7 @@
 node_modules
 dist
+# assets handled by webpack 
+server/public
 # ides:
 .vscode
 .idea

@@ -1,0 +1,17 @@
+<launch>
+  <!-- possible values: gmapping, slam_toolbox (not yet confirmed to work properly) -->
+  <arg name="admin_panel_slam_engine" default="gmapping" />
+  <arg name="admin_panel_map_autosave_interval" default="60000"/>
+  <arg name="admin_panel_port" default="8000"/>
+  <arg name="node_name" default="node_server"/>
+
+  <node 
+      pkg="rap2" 
+      type="node_server.sh" 
+      name="$(arg node_name)" 
+      output="screen" 
+      args="
+          --slam $(arg admin_panel_slam_engine)
+          --autosave $(arg admin_panel_map_autosave_interval) 
+          --port $(arg admin_panel_port)"/>
+</launch>    

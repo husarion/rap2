@@ -1,22 +1,22 @@
-const HtmlWebpackPlugin = require('html-webpack-plugin')
-const MiniCssExtractPlugin = require('mini-css-extract-plugin')
-const path = require('path')
+const HtmlWebpackPlugin = require('html-webpack-plugin');
+const MiniCssExtractPlugin = require('mini-css-extract-plugin');
+const path = require('path');
 
 module.exports = {
   entry: {
-    main: path.resolve(__dirname, './src/rap.js'),
+    main: path.resolve(__dirname, './client/rap.js'),
   },
 
   output: {
-    path: path.resolve(__dirname, './dist'),
-    filename: 'bundle.js'
+    path: path.resolve(__dirname, './server/public'),
+    filename: 'bundle.js',
   },
 
   plugins: [
     new HtmlWebpackPlugin({
-      favicon: './src/assets/favicon.ico',
-      template: path.resolve(__dirname, './src/template.html'),
-      filename: 'index.html'
+      favicon: './client/assets/favicon.ico',
+      template: path.resolve(__dirname, './client/template.html'),
+      filename: 'index.html',
     }),
 
     new MiniCssExtractPlugin(),
@@ -31,7 +31,7 @@ module.exports = {
       {
         test: /\.(js|jsx)$/,
         exclude: /node_modules/,
-        use: ['babel-loader']
+        use: ['babel-loader'],
       },
       {
         test: /\.worker\.js$/,
