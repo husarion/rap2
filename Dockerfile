@@ -41,17 +41,14 @@ RUN . ~/ros_workspace/devel/setup.sh
 #curl -sSL http://get.gazebosim.org | sh
 
 # my commands
-WORKDIR ~/ros_workspace/src/rap2
+# should I use workdir or cd
+RUN cd ~/ros_workspace/src/rap2
 RUN npm install
 RUN npm run build
-RUN mkdir ~/ros_workspace/src/route_admin_panel/nodejs/v2
-RUN cp ./dist/* ~/ros_workspace/src/route_admin_panel/nodejs/v2/
+RUN cd server
+RUN npm install
 
 
 #and after that:
 
-RUN roslaunch rap2 demo_gazebo.launch
-
-
-
-CMD [""]
+CMD roslaunch rap2 demo_gazebo.launch
