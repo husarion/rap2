@@ -1,0 +1,9 @@
+<?xml version="1.0"?>
+<package format="2">
+	<name>rap2</name>
+	<version>0.0.1</version>
+	<description>Successor to Husarion's route_admin_panel. The package allows user to send goals to move_base by using web browser.</description>
+	<maintainer email="szymon.niemiec@husarion.com">Szymon Niemiec</maintainer>
+	<license>LGPLv3</license>
+	<author email="szymon.niemiec@husarion.com">Szymon Niemiec</author>
+</package>

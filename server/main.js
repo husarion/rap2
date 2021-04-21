@@ -287,7 +287,7 @@ function startGmapping() {
   if (gmapping_process) {
     console.log('Gmapping is already running, no need to launch it again');
   } else {
-    gmapping_process = exec('roslaunch route_admin_panel gmapping.launch', (err, stdout, stderr) => {
+    gmapping_process = exec('roslaunch rap2 gmapping.launch', (err, stdout, stderr) => {
       console.log('Gmapping finished');
       if (err) {
         console.log(`Error: ${err}`);
@@ -315,7 +315,7 @@ function startSlamToolbox() {
   if (slam_toolbox_process) {
       console.log("Slam_toolbox is already running, no need to launch it again")
   } else {
-      slam_toolbox_process = exec('roslaunch route_admin_panel slam_toolbox.launch', (err, stdout, stderr) => {
+      slam_toolbox_process = exec('roslaunch rap2 slam_toolbox.launch', (err, stdout, stderr) => {
           console.log("Slam_toolbox finished");
           if (err) {
               console.log("Error: " + err);

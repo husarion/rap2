@@ -3,13 +3,6 @@
 FROM osrf/ros:noetic-desktop-full
 LABEL maintainer="szymon.niemiec@husarion.com"
 
-WORKDIR /app
-
-COPY . /app
-
-RUN npm install
-RUN npm run build
-
 # basic tools and ros stuff
 RUN apt update
 RUN apt install -q -y vim curl git silversearcher-ag
@@ -21,34 +14,39 @@ RUN apt install -q -y nodejs
 
 RUN mkdir ~/ros_workspace
 RUN mkdir ~/ros_workspace/src
-RUN cd ~/ros_workspace/src
-RUN catkin_init_workspace 
+WORKDIR /root/ros_workspace/src/
+# this doesnt work rn but its only needed when compiling cpp which I dont do rn
+#RUN catkin_init_workspace 
 
-#unnecessary as for one time run???
-#echo '. ~/ros_workspace/devel/setup.sh' >> ~/.bashrc
+#RUN echo '. /root/ros_workspace/devel/setup.sh' >> /root/.bashrc
 
-RUN git clone https://github.com/husarion/husarion_ros.git
 RUN git clone https://github.com/husarion/rosbot_description.git
-RUN git clone https://github.com/husarion/rap2
-
-WORKDIR /root/ros_workspace/src/route_admin_panel/nodejs
-
-RUN cd ~/ros_workspace
-RUN catkin_make
-RUN . ~/ros_workspace/devel/setup.sh
+RUN mkdir rap2
+COPY . /root/ros_workspace/src/rap2
+#RUN cd ~/ros_workspace
+#RUN catkin_make
+#RUN . ~/ros_workspace/devel/setup.sh
 
 # skip this cuz gazebo installs.... or....
 #curl -sSL http://get.gazebosim.org | sh
 
 # my commands
 # should I use workdir or cd
-RUN cd ~/ros_workspace/src/rap2
-RUN npm install
-RUN npm run build
-RUN cd server
-RUN npm install
 
+WORKDIR /root/ros_workspace
+RUN . /opt/ros/noetic/setup.sh && catkin_make
+RUN . /root/ros_workspace/devel/setup.sh
+WORKDIR /root/ros_workspace/src/rap2
+
+RUN cp noetic/rosbot_gazebo.launch /root/ros_workspace/src/rosbot_description/src/rosbot_description/launch/
+
+RUN npm install 
+RUN npm run build
+#RUN npm run build
+WORKDIR /root/ros_workspace/src/rap2/server
+RUN npm install
 
 #and after that:
+WORKDIR /root/ros_workspace
 
-CMD roslaunch rap2 demo_gazebo.launch
+CMD . /root/ros_workspace/devel/setup.sh && roslaunch rap2 demo_gazebo.launch
