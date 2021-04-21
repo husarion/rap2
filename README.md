@@ -1,4 +1,5 @@
 # rap2
+
 Next gen Route Admin Panel.
 
 Modern front-end using React, Three.js bound through react-three-fiber/drei and Webpack 5.0
@@ -7,6 +8,17 @@ NOTE: Temporarily using Socket.IO version 2.3 to keep compatibility with the cur
 
 NOTE: This product is Work in Progress™ so it's not something you could use right away; it's undergoing intensive development, though.
 
+## run demo with Docker
+
+```
+xhost +local:root
+```
+docker build -q --tag panther:1.0 -t panther_sim .
+
+docker run --net=host -e ROS_MASTER_URI -it --env="DISPLAY" --env="QT_X11_NO_MITSHM=1" -v /tmp/.X11-unix:/tmp/.X11-unix --name panther_sim panther_sim ./panther.bash
+
+xhost -local:root
+```
 ## Approach
 
 At this stage of development, RAP v2 is developed as frontend of single page application; it uses the old backend with slight modifications, lives alongside previous version of RAP and pubs/subs on exactly the same Socket.IO events messages.
@@ -22,3 +34,5 @@ will create dist/ directory with couple of static files (html, css, js) that can
 `npm run start`
 
 will setup and start a local development server with hot reloading on localhost port 8080. This can be used for UI development.
+
+
