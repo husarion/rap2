@@ -10,15 +10,30 @@ NOTE: This product is Work in Progress™ so it's not something you could use ri
 
 ## run demo with Docker
 
+first enable X server for gazebo GUI
+
 ```
 xhost +local:root
 ```
-docker build -q --tag panther:1.0 -t panther_sim .
 
-docker run --net=host -e ROS_MASTER_URI -it --env="DISPLAY" --env="QT_X11_NO_MITSHM=1" -v /tmp/.X11-unix:/tmp/.X11-unix --name panther_sim panther_sim ./panther.bash
+build the image:
 
+```
+docker build -t rap2_demo .
+```
+
+then run container.
+
+```
+docker run --net=host -e ROS_MASTER_URI -it --env="DISPLAY" --env="QT_X11_NO_MITSHM=1" -v /tmp/.X11-unix:/tmp/.X11-unix rap2_demo
+```
+
+dont forget to disable local connections after you done working with the container:
+
+```
 xhost -local:root
 ```
+
 ## Approach
 
 At this stage of development, RAP v2 is developed as frontend of single page application; it uses the old backend with slight modifications, lives alongside previous version of RAP and pubs/subs on exactly the same Socket.IO events messages.
