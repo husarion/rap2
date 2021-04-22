@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useMemo } from 'react';
+import React, { createContext, useContext } from 'react';
 import io from 'socket.io-client';
 import Worker from '../helpers/mapdata.worker';
 import UnitTransform from '../helpers/UnitTransform';
@@ -110,8 +110,6 @@ export class SocketManager extends React.Component {
   constructor(props) {
     super(props);
 
-    console.log('constructor SocketManager');
-
     // we are using web worker to draw robot occupancy grid from raw data because it's quite costly
     this.initWebWorker();
     // keepalive/ping-pong procedure allows us to have nice connection indicator on frontend
@@ -137,11 +135,6 @@ export class SocketManager extends React.Component {
           debugRobotPos: `x: ${data.x_pos} y: ${data.y_pos}t: ${data.theta}`,
         };
       });
-    });
-
-    ws.on('map_update', (data) => {
-      // It goes every second, and is legacy. Not very useful.
-      // console.log("map_update EVENT", data);
     });
 
     ws.on('map_file_list', (data) => {
@@ -188,39 +181,36 @@ export class SocketManager extends React.Component {
   }
 
   handleRawMapDataWebWorker(mapdata) {
-    const canvas = document.createElement('canvas');
-
     if (!mapdata) {
-      console.log('map not ready. inform user somehow.');
+      console.log('map not ready!');
       return;
     }
 
-    canvas.width = mapdata.info.width;
-    canvas.height = mapdata.info.height;
-
-    console.log('Posting to worker.', mapdata.info);
     this.worker.postMessage({ mapdata });
-
-    this.setState({
-      mapCanvas: canvas,
-      mapInfo: {
-        resolution: mapdata.info.resolution,
-        originPos: {
-          x: mapdata.info.origin.position.x,
-          y: mapdata.info.origin.position.y,
-        },
-        debugMapData: `origX: ${mapdata.info.origin.position.x} origY: ${mapdata.info.origin.position.y}`,
-      },
-    });
   }
 
   initWebWorker() {
     this.worker = new Worker();
 
     this.worker.onmessage = (e) => {
-      console.log('Worker msg ', e);
-      const ctx = this.state.mapCanvas.getContext('2d');
+      const canvas = document.createElement('canvas');
+      canvas.width = e.data.mapinfo.width;
+      canvas.height = e.data.mapinfo.height;
+
+      const ctx = canvas.getContext('2d');
       ctx.putImageData(e.data.imagedata, 0, 0);
+
+      this.setState({
+        mapCanvas: canvas,
+        mapInfo: {
+          resolution: e.data.mapinfo.resolution,
+          originPos: {
+            x: e.data.mapinfo.origin.position.x,
+            y: e.data.mapinfo.origin.position.y,
+          },
+          debugMapData: `origX: ${e.data.mapinfo.origin.position.x} origY: ${e.data.mapinfo.origin.position.y}`,
+        },
+      });
     };
   }
 

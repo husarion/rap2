@@ -1,21 +1,7 @@
-self.onmessage = async (e) => {
-  console.log(e);
-  const imageDataToPut = drawMap(e.data.mapdata);
-  self.postMessage({ imagedata: imageDataToPut });
-};
-
+/* eslint-disable no-restricted-globals */
 function drawMap(mapdata) {
   const len = mapdata.data.length;
-
   const imageData = new ImageData(mapdata.info.width, mapdata.info.height);
-
-  let cols = mapdata.info.width;
-  let rows = mapdata.info.height;
-
-  // for (let i = 0; i < rows; i += 1) {
-  //   for (let j = 0; j < cols; j += 1) {
-
-  // }
 
   for (let i = 0; i < len; i += 1) {
     if (mapdata.data[i] === -1) {
@@ -47,3 +33,8 @@ function drawMap(mapdata) {
 
   return imageData;
 }
+
+self.onmessage = async (e) => {
+  const imageDataToPut = drawMap(e.data.mapdata);
+  self.postMessage({ imagedata: imageDataToPut, mapinfo: e.data.mapdata.info });
+};
