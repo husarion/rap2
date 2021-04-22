@@ -1,4 +1,5 @@
 # rap2
+
 Next gen Route Admin Panel.
 
 Modern front-end using React, Three.js bound through react-three-fiber/drei and Webpack 5.0
@@ -6,6 +7,32 @@ Modern front-end using React, Three.js bound through react-three-fiber/drei and 
 NOTE: Temporarily using Socket.IO version 2.3 to keep compatibility with the current backend.
 
 NOTE: This product is Work in Progress™ so it's not something you could use right away; it's undergoing intensive development, though.
+
+## run demo with Docker
+
+first enable X server for gazebo GUI
+
+```
+xhost +local:root
+```
+
+build the image:
+
+```
+docker build -t rap2_demo .
+```
+
+then run container.
+
+```
+docker run --net=host -e ROS_MASTER_URI -it --env="DISPLAY" --env="QT_X11_NO_MITSHM=1" -v /tmp/.X11-unix:/tmp/.X11-unix rap2_demo
+```
+
+dont forget to disable local connections after you done working with the container:
+
+```
+xhost -local:root
+```
 
 ## Approach
 
@@ -22,3 +49,5 @@ will create dist/ directory with couple of static files (html, css, js) that can
 `npm run start`
 
 will setup and start a local development server with hot reloading on localhost port 8080. This can be used for UI development.
+
+
