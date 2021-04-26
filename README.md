@@ -25,7 +25,7 @@ docker build -t rap2_demo .
 then run container.
 
 ```
-docker run --net=host -e ROS_MASTER_URI -it --env="DISPLAY" --env="QT_X11_NO_MITSHM=1" -v /tmp/.X11-unix:/tmp/.X11-unix rap2_demo
+docker run -it -p 8000:8000 --env="DISPLAY" --env="QT_X11_NO_MITSHM=1" -v /tmp/.X11-unix:/tmp/.X11-unix rap2_demo
 ```
 
 dont forget to disable local connections after you done working with the container:
