@@ -11,7 +11,7 @@ import calculateNewSidebarWidth from './helpers/calculateNewSidebarWidth';
 import MobileButton from './components/buttons/MobileButton';
 
 export default () => {
-  const [activeTarget, setActiveTarget] = useState(null);
+  const [activeTargetId, setActiveTargetId] = useState(null);
   const [nextId, setNextId] = useState(0);
   const [isPlacingTarget, setIsPlacingTarget] = useState(false);
   const [sidebarWidth, setSidebarWidth] = useState(
@@ -74,14 +74,14 @@ export default () => {
   };
 
   const targetHoverOn = (targetId) => {
-    setActiveTarget(targetId);
+    setActiveTargetId(targetId);
     // is calling document an anti pattern here?
     // I don't really see a better way rn.
     document.body.style.cursor = 'pointer';
   };
 
   const targetHoverOff = () => {
-    setActiveTarget(null);
+    setActiveTargetId(null);
     document.body.style.cursor = 'default';
   };
 
@@ -109,7 +109,7 @@ export default () => {
             debugModeHandler={() => {}}
             resetCameraHandler={handleCameraReset}
             targets={socketData.wsTargets}
-            activeTargetId={activeTarget}
+            activeTargetId={activeTargetId}
             deleteTargetHandler={(id) => SocketManager.emitDeleteTargetRequest(id)}
             modifyTargetHandler={(id, changes) => SocketManager.emitModifyTargetRequest(id, changes)}
             driveToTargetHandler={(id) => SocketManager.emitDriveToTarget(id)}
@@ -129,7 +129,7 @@ export default () => {
           targetHoverOn={targetHoverOn}
           targetHoverOff={targetHoverOff}
           isPlacingTarget={isPlacingTarget}
-          activeTarget={activeTarget}
+          activeTargetId={activeTargetId}
         />
         <DebugArea />
       </Suspense>
