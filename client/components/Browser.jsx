@@ -117,7 +117,7 @@ const Browser = forwardRef((props, ref) => {
             targets={props.targets}
             unitTransform={transf}
             modelSize={props.modelSize}
-            activeTargetId={props.activeTarget}
+            activeTargetId={props.activeTargetId}
             targetHoverOn={(id) => props.targetHoverOn(id)}
             targetHoverOff={() => props.targetHoverOff()}
           />
