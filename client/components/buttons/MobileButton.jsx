@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 
 export default () => {
   const [active, setActive] = useState(false);
-  // eslint-disable-next-line linebreak-style
 
   const handleClick = () => {
     setActive(!active);

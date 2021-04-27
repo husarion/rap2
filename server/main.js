@@ -1,3 +1,4 @@
+/* eslint-disable camelcase */
 const app = require('express')();
 const express = require('express');
 const http = require('http').createServer(app);
@@ -8,6 +9,8 @@ const math3d = require('math3d');
 const fs = require('fs');
 const yargs = require('yargs');
 const path = require('path');
+const multer = require('multer');
+const { exec } = require('child_process');
 
 const NavTargets = require('./nav_targets.js');
 const TfListener = require('./tf_listener.js');
@@ -18,10 +21,6 @@ const geometry_msgs = rosnodejs.require('geometry_msgs').msg;
 const move_base_msgs = rosnodejs.require('move_base_msgs').msg;
 const nav_msgs_service = rosnodejs.require('nav_msgs').srv;
 const RoutePlanner = require('./route_planner.js');
-
-const multer = require('multer');
-
-const { exec } = require('child_process');
 
 const storage = multer.diskStorage({
   destination(req, file, cb) {
@@ -103,7 +102,6 @@ console.log('SLAM Engine: ', argv.slam_engine);
 autosave_interval_time = argv.map_autosave_interval;
 
 function save_config() {
-
   // make save_config as noop for the time being.
 
   const confObject = {
@@ -137,8 +135,6 @@ function stop_slam_process() {
 }
 
 function load_config() {
-  console.log("lOADING CONFIG SZYMEK/");
-
   if (fs.existsSync(configFileName)) {
     fs.readFile(configFileName, 'utf8', (err, data) => {
       if (err) {
@@ -301,29 +297,29 @@ function startGmapping() {
 
 function stopSlamToolbox() {
   if (slam_toolbox_process) {
-      exec('rosnode kill slam_toolbox_node', (err, stdout, stderr) => {
-          if (err) {
-              console.log("Could not stop slam_toolbox: " + err);
-          }
-      });
-      slam_toolbox_process.kill();
-      slam_toolbox_process = null;
+    exec('rosnode kill slam_toolbox_node', (err, stdout, stderr) => {
+      if (err) {
+        console.log(`Could not stop slam_toolbox: ${err}`);
+      }
+    });
+    slam_toolbox_process.kill();
+    slam_toolbox_process = null;
   }
 }
 
 function startSlamToolbox() {
   if (slam_toolbox_process) {
-      console.log("Slam_toolbox is already running, no need to launch it again")
+    console.log('Slam_toolbox is already running, no need to launch it again');
   } else {
-      slam_toolbox_process = exec('roslaunch rap2 slam_toolbox.launch', (err, stdout, stderr) => {
-          console.log("Slam_toolbox finished");
-          if (err) {
-              console.log("Error: " + err);
-              return;
-          }
-          slam_toolbox_process = null;
-      });
-      console.log("Slam_toolbox launched");
+    slam_toolbox_process = exec('roslaunch rap2 slam_toolbox.launch', (err, stdout, stderr) => {
+      console.log('Slam_toolbox finished');
+      if (err) {
+        console.log(`Error: ${err}`);
+        return;
+      }
+      slam_toolbox_process = null;
+    });
+    console.log('Slam_toolbox launched');
   }
 }
 
@@ -688,7 +684,7 @@ rosnodejs.initNode('/rosnodejs')
       // let's get raw OccupancyGrid from rosbot to explore
       // manipulation options on browser side.
       // there is new map - better save it for later...
-      lastOccupancyGrid = data; 
+      lastOccupancyGrid = data;
       io.emit('raw_map_data', data);
     });
 

@@ -135,8 +135,6 @@ const Browser = forwardRef((props, ref) => {
           unitTransform={transf}
         />
 
-        <arrowHelper args={[['dupa', 0, 0], [0, 0, 0], 100, 0xff00ff, 0.6, 0.1]} />
-
         <OrthographicCamera
           makeDefault
           fov={75}

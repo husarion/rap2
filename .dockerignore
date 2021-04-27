@@ -1,0 +1,6 @@
+node_modules
+dist
+server/public
+.vscode
+.idea
+compilation-stats.json

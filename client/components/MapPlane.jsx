@@ -1,7 +1,8 @@
+/* eslint-disable no-param-reassign */
 import React from 'react';
 
 export default (props) => {
-  const onu = (s) => {
+  const setNeedsUpdate = (s) => {
     s.needsUpdate = true;
   };
 
@@ -16,13 +17,13 @@ export default (props) => {
       <planeGeometry
         width={1}
         height={1}
-        onUpdate={onu}
+        onUpdate={setNeedsUpdate}
       />
       <meshBasicMaterial attach="material">
         <canvasTexture
           attach="map"
           image={props.mapCanvas}
-          onUpdate={onu}
+          onUpdate={setNeedsUpdate}
           flipY={false}
         />
       </meshBasicMaterial>

@@ -35,7 +35,6 @@ export default (props) => (
     <ConnectionIndicator isConnected={props.isConnected} />
     <ThemeProvider theme={husarionMaterialTheme}>
       <AddTargetButton clickHandler={props.addTargetHandler} />
-      {/* <LoggingButton clickHandler={props.debugModeHandler} /> */}
       <ResetCameraButton clickHandler={props.resetCameraHandler} />
       <StopButton clickHandler={props.stopHandler} />
       <RestartSLAMButton clickHandler={props.restartSLAMHandler} />
