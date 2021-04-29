@@ -1,0 +1,51 @@
+{
+  "name": "rap2-client",
+  "version": "1.0.0",
+  "description": "Web interface for managing routes for ROS-based autonomous robot",
+  "scripts": {
+    "build": "webpack --config webpack.prod.js",
+    "build:dev": "webpack --config webpack.dev.js",
+    "json:dev": "webpack --config webpack.dev.js --json > stats.json",
+    "json:prod": "webpack --config webpack.prod.js --json > stats.json",
+    "start": "webpack serve --config webpack.dev.js --host 0.0.0.0",
+    "bundle-report": "webpack-bundle-analyzer --port 4200 compilation-stats.json"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "GPL-3.0-only",
+  "dependencies": {
+    "@babel/core": "^7.13.0",
+    "@babel/plugin-proposal-class-properties": "^7.13.0",
+    "@babel/preset-env": "^7.13.15",
+    "@babel/preset-react": "^7.13.13",
+    "@material-ui/core": "^4.11.4",
+    "@material-ui/icons": "^4.11.2",
+    "@react-three/drei": "^4.3.2",
+    "@react-three/fiber": "^6.0.17",
+    "@vxna/gltf-loader": "^2.0.1",
+    "babel-loader": "^8.2.2",
+    "css-loader": "^5.2.4",
+    "file-loader": "^6.2.0",
+    "html-webpack-plugin": "^5.3.1",
+    "mini-css-extract-plugin": "^1.5.1",
+    "react": "^17.0.2",
+    "react-dom": "^17.0.2",
+    "socket.io-client": "^4.0.1",
+    "style-loader": "^2.0.0",
+    "three": "^0.128.0",
+    "webpack": "^5.36.1",
+    "webpack-cli": "^4.6.0",
+    "webpack-merge": "^5.7.3",
+    "worker-loader": "^3.0.8"
+  },
+  "devDependencies": {
+    "eslint": "^7.25.0",
+    "eslint-config-airbnb": "^18.2.1",
+    "eslint-plugin-import": "^2.22.1",
+    "eslint-plugin-jsx-a11y": "^6.4.1",
+    "eslint-plugin-react": "^7.23.2",
+    "eslint-plugin-react-hooks": "^4.2.0",
+    "webpack-bundle-analyzer": "^4.4.1",
+    "webpack-dev-server": "^3.11.2"
+  }
+}

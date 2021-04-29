@@ -2,8 +2,8 @@ import React, {
   useRef, useState, useImperativeHandle, Suspense, forwardRef,
 } from 'react';
 
-import { Canvas } from 'react-three-fiber';
-import { OrbitControls, OrthographicCamera } from 'drei';
+import { Canvas } from '@react-three/fiber';
+import { OrbitControls, OrthographicCamera } from 'Drei';
 
 import { TOUCH } from 'three';
 import { useWebsocket } from './SocketManager';
@@ -156,8 +156,8 @@ const Browser = forwardRef((props, ref) => {
           ref={controlsRef}
           minDistance={1}
           maxDistance={100000}
-          minAzimuthAngle={0}
-          maxAzimuthAngle={0}
+          // minAzimuthAngle={0}
+          // maxAzimuthAngle={Math.PI * 2}
           dampingFactor={0.2}
           minPolarAngle={0}
           maxPolarAngle={0}

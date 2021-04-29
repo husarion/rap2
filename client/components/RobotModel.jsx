@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
-import { useLoader } from 'react-three-fiber';
+import { useLoader } from '@react-three/fiber';
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader';
-import { Ring } from 'drei';
+import { Ring } from 'Drei';
 import rosbotModel from '../assets/rosbot.gltf';
 
 export default (props) => {

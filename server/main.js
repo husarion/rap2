@@ -2,7 +2,8 @@
 const app = require('express')();
 const express = require('express');
 const http = require('http').createServer(app);
-const io = require('socket.io')(http);
+const { Server } = require("socket.io");
+const io = new Server(http);
 const rosnodejs = require('rosnodejs');
 const quaternionToEuler = require('quaternion-to-euler');
 const math3d = require('math3d');

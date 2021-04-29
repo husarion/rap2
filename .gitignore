@@ -1,9 +1,9 @@
 node_modules
 dist
+build
 # assets handled by webpack 
 server/public
 # ides:
 .vscode
 .idea
-
 compilation-stats.json

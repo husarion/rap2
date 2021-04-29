@@ -1,5 +1,5 @@
 import React from 'react';
-import { Line } from 'drei';
+import { Line } from 'Drei';
 
 export default (props) => {
   const elevationAbovePlane = 1;

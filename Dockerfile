@@ -23,30 +23,29 @@ WORKDIR /root/ros_workspace/src/
 RUN git clone https://github.com/husarion/rosbot_description.git
 RUN mkdir rap2
 COPY . /root/ros_workspace/src/rap2
-#RUN cd ~/ros_workspace
-#RUN catkin_make
-#RUN . ~/ros_workspace/devel/setup.sh
 
-# skip this cuz gazebo installs.... or....
-#curl -sSL http://get.gazebosim.org | sh
-
-# my commands
-# should I use workdir or cd
-
+# set up workspace
 WORKDIR /root/ros_workspace
 RUN . /opt/ros/noetic/setup.sh && catkin_make
 RUN . /root/ros_workspace/devel/setup.sh
 WORKDIR /root/ros_workspace/src/rap2
 
+# patch bug in gazebo on noetic
 RUN cp noetic/rosbot_gazebo.launch /root/ros_workspace/src/rosbot_description/src/rosbot_description/launch/
 
-RUN npm install 
+# build client
+WORKDIR /root/ros_workspace/src/rap2/client
+RUN npm install --only=prod
 RUN npm run build
-#RUN npm run build
-WORKDIR /root/ros_workspace/src/rap2/server
-RUN npm install
 
-#and after that:
+# build server
+WORKDIR /root/ros_workspace/src/rap2/server
+RUN npm install --only=prod
+# copy client code to public dir for server to serve
+RUN mkdir -p public
+RUN cp /root/ros_workspace/src/rap2/client/build/* public/
+
+# and all is set
 WORKDIR /root/ros_workspace
 
 CMD . /root/ros_workspace/devel/setup.sh && roslaunch rap2 demo_gazebo.launch
