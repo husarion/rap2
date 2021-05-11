@@ -10,8 +10,7 @@ RUN apt install -q -y ros-noetic-tf ros-noetic-cv-bridge ros-noetic-image-transp
 RUN curl -sL https://deb.nodesource.com/setup_14.x | sudo -E bash -
 RUN apt install -q -y nodejs
 
-RUN mkdir ~/ros_workspace
-RUN mkdir ~/ros_workspace/src
+RUN mkdir -p /ros_workspace/src
 WORKDIR /root/ros_workspace/src/
 
 # this doesnt work rn but its only needed when compiling cpp which I dont do rn
@@ -28,7 +27,6 @@ RUN . /opt/ros/noetic/setup.sh && catkin_make
 RUN . /root/ros_workspace/devel/setup.sh
 
 RUN mkdir rap2
-
 
 # install client deps
 WORKDIR /root/ros_workspace/src/rap2
@@ -59,4 +57,6 @@ RUN cp /root/ros_workspace/src/rap2/client/build/* public/
 # and all is set
 WORKDIR /root/ros_workspace
 
-CMD . /root/ros_workspace/devel/setup.sh && roslaunch rap2 demo_gazebo.launch
+COPY ./start.sh /root/ros_workspace
+RUN chmod +x /root/ros_workspace/start.sh
+CMD [ "/root/ros_workspace/start.sh", "" ]

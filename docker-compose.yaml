@@ -1,0 +1,21 @@
+version: "3.8"
+services:
+  gazebo:
+    image: rap2_gazebo
+    build:
+      context: ./examples/gazebo
+      args:
+        SSH_PASS: ${SSH_PASS}
+    volumes:
+      - ./examples/gazebo/sshd_config:/etc/ssh/sshd_config
+      - ./examples/gazebo/start.sh:/home/husarion/start.sh
+      - ./examples/gazebo/env-loader.sh:/home/husarion/env-loader.sh
+    environment: 
+      - DISPLAY
+  app:
+    image: rap2_app
+    env_file: .env
+    build:
+      context: ./
+    ports: 
+      - "8000:8000"

@@ -7,3 +7,4 @@ server/public
 .vscode
 .idea
 compilation-stats.json
+.env
