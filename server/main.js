@@ -438,11 +438,12 @@ function getFileList(startPath, filter) {
 }
 
 function emit_target(target) {
-  io.emit('add_target', target);
+  // currently as noop, debugging
+  // io.emit('add_target', target);
 }
 
 function emit_targets_update() {
-  console.log('emit targets update');
+  console.log('emit targets update', targets.get_targets());
   io.emit('targets_update', targets.get_targets());
 }
 

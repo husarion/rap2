@@ -7,7 +7,19 @@ class TargetList {
   }
 
   add_target(target) {
-    this.targets.push(target);
+    if (this.is_valid_target(target)) {
+      this.targets.push(target);
+      return;
+    }
+    console.log('Notice: attempted to add invalid target', target);
+  }
+
+  is_valid_target(target) {
+    // just some defensive programming
+    return (target.x !== undefined && target.x !== null)
+      && (target.y !== undefined && target.y !== null)
+      && (target.theta !== undefined && target.theta !== null)
+      && (target.id !== undefined && target.id !== null)
   }
 
   get_target_by_id(target_id) {
