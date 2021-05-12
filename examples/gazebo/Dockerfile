@@ -2,8 +2,6 @@
 FROM osrf/ros:noetic-desktop-full
 LABEL maintainer="szymon.niemiec@husarion.com"
 
-ARG SSH_PASS
-
 # basic tools and ros stuff
 RUN apt update && apt install --fix-missing -q -y vim curl git silversearcher-ag inetutils-ping
 RUN apt install --fix-missing -q -y ros-noetic-tf ros-noetic-cv-bridge ros-noetic-image-transport ros-noetic-joint-state-controller ros-noetic-xacro ros-noetic-gazebo-ros ros-noetic-move-base ros-noetic-controller-manager ros-noetic-robot-state-publisher ros-noetic-map-server ros-noetic-gmapping
@@ -11,7 +9,7 @@ RUN apt install --fix-missing -q -y ros-noetic-tf ros-noetic-cv-bridge ros-noeti
 # openssh support for remote roslaunching
 RUN apt install --fix-missing -q -y openssh-server
 
-RUN useradd -m -s /bin/bash -p $(openssl passwd -1 $SSH_PASS) husarion
+RUN useradd -m -s /bin/bash -p $(openssl passwd -1 husarion) husarion
 
 RUN mkdir -p /home/husarion/ros_workspace/src
 

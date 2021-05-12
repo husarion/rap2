@@ -4,8 +4,6 @@ services:
     image: rap2_gazebo
     build:
       context: ./examples/gazebo
-      args:
-        SSH_PASS: ${SSH_PASS}
     volumes:
       - ./examples/gazebo/sshd_config:/etc/ssh/sshd_config
       - ./examples/gazebo/start.sh:/home/husarion/start.sh

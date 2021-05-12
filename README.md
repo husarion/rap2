@@ -1,53 +1,55 @@
-# rap2
+# rap2 - web interface for managing robot movement
 
-Next gen Route Admin Panel.
+RAP2 (Route Admin Panel v2) is single-page web application allowing you to define targets and routes for ROS-based mobile robot.
 
-Modern front-end using React, Three.js bound through react-three-fiber/drei and Webpack 5.0
+![RAP2Screenshot](screenshot.png)
 
-NOTE: Temporarily using Socket.IO version 2.3 to keep compatibility with the current backend.
+Modern front-end using React, Three.js bound through react-three-fiber/drei and Webpack 5.0.
 
-NOTE: This product is Work in Progress™ so it's not something you could use right away; it's undergoing intensive development, though.
+## Example: two Docker containers, RAP2 + Gazebo
 
-## run demo with Docker
+In below example we set up two containers, one running gazebo simulation and ROS master and the other with RAP2 instance. You will need an X server, Docker and docker-compose installed.
 
-first enable X server for gazebo GUI
+Below commands shall be executed in repository root.
+
+1) enable X server. This will be used by gazebo GUI, not by RAP2. Note: If you're on Windows with WSL2 and Docker Desktop, make sure you have X server for Windows installed and run. VcXsrv is good choice.
 
 ```
 xhost +local:root
 ```
 
-build the image:
+2) set up environment variables. You can simply copy example env file from repo, as below. These will be picked up by docker-compose.
 
 ```
-docker build -t rap2_demo .
+mv .env.example .env
 ```
 
-then run container.
+3) build & run:
 
 ```
-docker run -it -p 8000:8000 --env="DISPLAY" --env="QT_X11_NO_MITSHM=1" -v /tmp/.X11-unix:/tmp/.X11-unix rap2_demo
+docker-compose up
 ```
 
-dont forget to disable local connections after you done working with the container:
+After you're done working with the GUI, it's good idea to disable connections for X server:
 
 ```
 xhost -local:root
 ```
 
-## Approach
+## Example: RAP2 on ROSBOT
 
-At this stage of development, RAP v2 is developed as frontend of single page application; it uses the old backend with slight modifications, lives alongside previous version of RAP and pubs/subs on exactly the same Socket.IO events messages.
+TODO
 
-## How to build
+## How to build client
 
-The build process is controlled by webpack. You can use commands below after installing deps via `npm install`
+Building is straightforward. You will need Node.js.
 
-`npm run build`
+```
+cd client
+npm install
+npm run build
+```
 
-will create dist/ directory with couple of static files (html, css, js) that can be put on ROSBOT. Then you can create v2 folder in previous route_admin_panel directory on the robot (in nodejs/) and replace main.js file for backend/main.js
+The output will be saved to client/build folder.
 
-`npm run start`
-
-will setup and start a local development server with hot reloading on localhost port 8080. This can be used for UI development.
-
-
+Refer to Dockerfile for details on the environment and build process.
