@@ -30,6 +30,8 @@ mv .env.example .env
 docker-compose up
 ```
 
+After containers are build, gazebo GUI should start (initialization takes a lot of time) and RAP2 will be reachable on `http://localhost:8000/`
+
 After you're done working with the GUI, it's good idea to disable connections for X server:
 
 ```
