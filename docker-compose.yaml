@@ -15,5 +15,7 @@ services:
     env_file: .env
     build:
       context: ./
+      args:
+        ARCH: ${ARCH}
     ports: 
       - "8000:8000"

@@ -1,10 +1,10 @@
-FROM osrf/ros:noetic-desktop-full
+ARG ARCH
+
+FROM ${ARCH}/ros:noetic
 LABEL maintainer="szymon.niemiec@husarion.com"
 
-# basic tools and ros stuff
-RUN apt update
-RUN apt install -q -y vim curl git silversearcher-ag
-RUN apt install -q -y ros-noetic-tf ros-noetic-cv-bridge ros-noetic-image-transport ros-noetic-joint-state-controller ros-noetic-xacro ros-noetic-gazebo-ros ros-noetic-move-base ros-noetic-controller-manager ros-noetic-robot-state-publisher ros-noetic-map-server ros-noetic-gmapping
+# basic tools
+RUN apt-get update && apt-get install -q -y vim curl git silversearcher-ag ros-noetic-move-base-msgs ros-noetic-tf2-msgs
 
 # install node 14 (LTS)
 RUN curl -sL https://deb.nodesource.com/setup_14.x | sudo -E bash -
