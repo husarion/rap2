@@ -1,15 +1,25 @@
-version: "3.8"
+version: "3.3"
 services:
   gazebo:
     image: rap2_gazebo
     build:
       context: ./examples/gazebo
     volumes:
-      - ./examples/gazebo/sshd_config:/etc/ssh/sshd_config
-      - ./examples/gazebo/start.sh:/home/husarion/start.sh
-      - ./examples/gazebo/env-loader.sh:/home/husarion/env-loader.sh
+      - ./examples/common/sshd_config:/etc/ssh/sshd_config
+      - ./examples/common/start.sh:/home/husarion/start.sh
+      - ./examples/common/env-loader.sh:/home/husarion/env-loader.sh
     environment: 
       - DISPLAY
+  ros:
+    image: rap2_ros
+    build:
+      context: ./examples/gazebo
+      args:
+        ARCH: ${ARCH}
+    volumes:
+      - ./examples/common/sshd_config:/etc/ssh/sshd_config
+      - ./examples/common/start.sh:/home/husarion/start.sh
+      - ./examples/common/env-loader.sh:/home/husarion/env-loader.sh
   app:
     image: rap2_app
     env_file: .env

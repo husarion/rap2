@@ -10,21 +10,28 @@ Modern front-end using React, Three.js bound through react-three-fiber/drei and 
 
 In below example we set up two containers, one running gazebo simulation and ROS master and the other with RAP2 instance. You will need an X server, Docker and docker-compose installed.
 
-Below commands shall be executed in repository root.
+The commands shall be executed in repository root. 
 
-1) enable X server. This will be used by gazebo GUI, not by RAP2. Note: If you're on Windows with WSL2 and Docker Desktop, make sure you have X server for Windows installed and run. VcXsrv is good choice.
+1) Start by cloning the repository into folder of choice:
+
+```
+git clone https://github.com/husarion/rap2
+cd rap2
+```
+
+2) enable X server. This will be used by gazebo GUI, not by RAP2. Note: If you're on Windows with WSL2 and Docker Desktop, make sure you have X server for Windows installed and run. VcXsrv is good choice.
 
 ```
 xhost +local:root
 ```
 
-2) set up environment variables. You can simply copy example env file from repo, as below. These will be picked up by docker-compose.
+3) set up environment variables. You can simply copy example env file from repo, as below. These will be picked up by docker-compose.
 
 ```
-mv .env.example .env
+cp .env.example-gazebo .env
 ```
 
-3) build & run:
+4) build & run:
 
 ```
 docker-compose up
@@ -40,7 +47,26 @@ xhost -local:root
 
 ## Example: RAP2 on ROSBOT
 
-TODO
+1) Start by SSHing into your ROSBOT and clone the repository into folder of choice:
+
+```
+git clone https://github.com/husarion/rap2
+cd rap2
+```
+
+2) Building on ROSBOT requires you to set up **arm** architecture in .env file. Copy example config with ARCH=arm32v7 inside:
+
+```
+cp .env.example-rosbot .env
+```
+
+3) build & run:
+
+```
+docker-compose up
+```
+
+RAP2 will be reachable on ROSBOT_IP:8000
 
 ## How to build client
 
