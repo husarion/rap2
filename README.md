@@ -34,7 +34,7 @@ cp .env.example-gazebo .env
 4) build & run:
 
 ```
-docker-compose up
+docker-compose up app gazebo
 ```
 
 After containers are build, gazebo GUI should start (initialization takes a lot of time) and RAP2 will be reachable on `http://localhost:8000/`
@@ -63,7 +63,7 @@ cp .env.example-rosbot .env
 3) build & run:
 
 ```
-docker-compose up
+docker-compose up app ros
 ```
 
 RAP2 will be reachable on ROSBOT_IP:8000
