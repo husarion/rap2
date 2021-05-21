@@ -6,19 +6,17 @@ services:
       context: ./examples/gazebo
     volumes:
       - ./examples/common/sshd_config:/etc/ssh/sshd_config
-      - ./examples/common/start.sh:/home/husarion/start.sh
       - ./examples/common/env-loader.sh:/home/husarion/env-loader.sh
     environment: 
       - DISPLAY
   ros:
     image: rap2_ros
     build:
-      context: ./examples/gazebo
+      context: ./examples/rosbot
       args:
         ARCH: ${ARCH}
     volumes:
       - ./examples/common/sshd_config:/etc/ssh/sshd_config
-      - ./examples/common/start.sh:/home/husarion/start.sh
       - ./examples/common/env-loader.sh:/home/husarion/env-loader.sh
   app:
     image: rap2_app

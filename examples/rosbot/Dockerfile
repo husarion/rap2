@@ -1,5 +1,5 @@
 # TODO : desktop is probably not needed
-FROM osrf/ros:noetic-desktop-full
+FROM osrf/ros:noetic-desktop
 LABEL maintainer="szymon.niemiec@husarion.com"
 
 # basic tools and ros stuff
@@ -18,7 +18,6 @@ RUN echo "husarion:x:1000:" >> /etc/group
 RUN echo "husarion ALL=(ALL) NOPASSWD: ALL" > /etc/sudoers.d/husarion
 RUN chmod 0440 /etc/sudoers.d/husarion
 
-# NOTE: Remember to disable root login
 WORKDIR /home/husarion/ros_workspace/src/
 
 # this doesnt work rn but its only needed when compiling cpp which I dont do rn
