@@ -20,17 +20,18 @@ RUN chmod 0440 /etc/sudoers.d/husarion
 
 WORKDIR /home/husarion/ros_workspace/src/
 
-# this doesnt work rn but its only needed when compiling cpp which I dont do rn
-#RUN catkin_init_workspace 
+RUN catkin_init_workspace 
 
 RUN git clone https://github.com/husarion/rosbot_description.git
+RUN git clone https://github.com/husarion/rosbot_ekf.git
+RUN git clone https://github.com/robopeak/rplidar_ros.git
+
 # patch bug in rosbot_description on noetic
 COPY ./noetic/rosbot_gazebo.launch /home/husarion/ros_workspace/src/rosbot_description/src/rosbot_description/launch/
-COPY ./launch/gazebo_all.launch /home/husarion/ros_workspace/src/
+COPY ./launch/rosbot_all.launch /home/husarion/ros_workspace/src/
 
 # set up workspace
 WORKDIR /home/husarion/ros_workspace
-# TODO : clone ekf and dependent packages
 RUN . /opt/ros/noetic/setup.sh && catkin_make
 RUN . /home/husarion/ros_workspace/devel/setup.sh
 
