@@ -1,0 +1,20 @@
+version: "3.3"
+services:
+  gazebo:
+    build:
+      context: ./
+    volumes:
+      - ../common/sshd_config:/etc/ssh/sshd_config
+    environment:
+      - DISPLAY
+  app:
+    build:
+      context: ../../
+      args:
+        ARCH: amd64
+    ports:
+      - "8000:8000"
+    environment:
+      - QT_X11_NO_MITSHM=1
+      - ROSLAUNCH_SSH_UNKNOWN=1
+      - ROS_MASTER_URI=http://gazebo:11311

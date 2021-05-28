@@ -39,5 +39,7 @@ EXPOSE 11311
 USER husarion
 
 COPY ./start.sh /home/husarion/
+COPY ./env-loader.sh /home/husarion/
 RUN sudo chmod +x /home/husarion/start.sh
+RUN sudo chmod +x /home/husarion/env-loader.sh
 CMD [ "/home/husarion/start.sh", "" ]

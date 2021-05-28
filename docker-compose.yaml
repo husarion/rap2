@@ -1,16 +1,14 @@
 version: "3.3"
 services:
   gazebo:
-    image: rap2_gazebo
     build:
       context: ./examples/gazebo
     volumes:
       - ./examples/common/sshd_config:/etc/ssh/sshd_config
       - ./examples/common/env-loader.sh:/home/husarion/env-loader.sh
-    environment: 
+    environment:
       - DISPLAY
   ros:
-    image: rap2_ros
     build:
       context: ./examples/rosbot
       args:
@@ -19,11 +17,10 @@ services:
       - ./examples/common/sshd_config:/etc/ssh/sshd_config
       - ./examples/common/env-loader.sh:/home/husarion/env-loader.sh
   app:
-    image: rap2_app
     env_file: .env
     build:
       context: ./
       args:
         ARCH: ${ARCH}
-    ports: 
+    ports:
       - "8000:8000"
